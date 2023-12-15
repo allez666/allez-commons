@@ -10,6 +10,9 @@
     <packaging>pom</packaging>
     <modules>
         <module>allez-commons-dependencies</module>
+        <module>allez-commons-lang</module>
+        <module>allez-commons-web</module>
+        <module>allez-commons-starter</module>
     </modules>
 
     <properties>
