@@ -25,6 +25,6 @@ public enum ResultCode implements IValue<Integer> {
 
     @Override
     public Integer getValue() {
-        return null;
+        return this.code;
     }
 }

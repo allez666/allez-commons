@@ -13,11 +13,31 @@ public class BusinessException extends RuntimeException {
 
     private final Integer code;
 
-    public static void main(String[] args) {
-        ResultCode.values()
+
+    public BusinessException(Integer code,String msg) {
+        super(msg);
+        this.code = code;
     }
 
+    public BusinessException(Integer code) {
+        super(ResultCode.FAIL.getMsg());
+        this.code = code;
+    }
 
+    public BusinessException(String msg){
+        super(msg);
+        this.code = ResultCode.FAIL.getCode();
+    }
+
+    public BusinessException(ResultCode code) {
+        super(code.getMsg());
+        this.code = code.getCode();
+    }
+
+    public BusinessException(ResultCode code, String message) {
+        super(message);
+        this.code = code.getCode();
+    }
 
 
 }
