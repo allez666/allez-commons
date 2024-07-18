@@ -18,11 +18,12 @@ public class EnumConverterUtils {
 
     /**
      * value转枚举
+     *
      * @param enumClass
      * @param value
-     * @return
      * @param <T>
      * @param <E>
+     * @return
      */
     @SuppressWarnings("unchecked")
     public static <T, E extends IValue<T>> E convert(Class<E> enumClass, T value) {
@@ -50,21 +51,22 @@ public class EnumConverterUtils {
 
     /**
      * 执行枚举的values方法
+     *
      * @param enumClass
-     * @return
      * @param <T>
      * @param <E>
+     * @return
      */
     private static <T, E extends IValue<T>> E[] enumsOf(Class<E> enumClass) {
 
         // 必须是枚举类型
         if (!(Enum.class.isAssignableFrom(enumClass))) {
-            throw new RuntimeException(String.format("%s is not a enum type"));
+            throw new RuntimeException(String.format("%s is not a enum type", enumClass));
         }
         try {
             // 执行枚举values方法获取所有元素
             Method valuesMethod = enumClass.getMethod("values");
-            return  (E[]) valuesMethod.invoke(null);
+            return (E[]) valuesMethod.invoke(null);
         } catch (NoSuchMethodException e) {
             // 入口有枚举类型检查, 所以不会执行到这里
             throw new RuntimeException(e);
@@ -79,11 +81,12 @@ public class EnumConverterUtils {
 
     /**
      * 非空的
+     *
      * @param enumClass
      * @param value
-     * @return
      * @param <T>
      * @param <E>
+     * @return
      */
     public static <T, E extends IValue<T>> E convertNonNull(Class<E> enumClass, T value) {
         E result = convert(enumClass, value);
@@ -95,12 +98,13 @@ public class EnumConverterUtils {
 
     /**
      * 带默认值的
+     *
      * @param enumClass
      * @param value
      * @param defaultValue
-     * @return
      * @param <T>
      * @param <E>
+     * @return
      */
     public static <T, E extends IValue<T>> E convert(Class<E> enumClass, T value, E defaultValue) {
         E result = convert(enumClass, value);
@@ -112,6 +116,7 @@ public class EnumConverterUtils {
 
     /**
      * Optional
+     *
      * @param value
      * @return
      */
@@ -120,7 +125,7 @@ public class EnumConverterUtils {
     }
 
     public static <T, E extends IValue<T>> Collection<T> valuesOf(Class<E> enumClass) {
-        return Arrays.stream(enumsOf(enumClass)).map(e -> e.getValue()).collect(Collectors.toList());
+        return Arrays.stream(enumsOf(enumClass)).map(IValue::getValue).collect(Collectors.toList());
     }
 
     public static <T, E extends IValue<T>> boolean contains(Class<E> enumClass, T value) {

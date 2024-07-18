@@ -98,7 +98,7 @@ public class SnowFlakeUtils {
             this.sequence = (this.sequence > 0 ? 0L : 1L);
         } else {
             //序列小于最大值自增
-            if (this.sequence <= SnowFlakeUtils.MAX_SEQUENCE) {
+            if (this.sequence < SnowFlakeUtils.MAX_SEQUENCE) {
                 this.sequence++;
             }
             //序列溢出

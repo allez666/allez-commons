@@ -16,6 +16,9 @@ public enum ResultCode implements IValue<Integer> {
     SUCCESS(200, "success"),
     FAIL(-1, "fail"),
 
+    /**
+     * 提醒
+     */
     REMIND(-2, "remind"),
     ;
 

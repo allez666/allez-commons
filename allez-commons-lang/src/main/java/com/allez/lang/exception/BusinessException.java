@@ -1,7 +1,7 @@
 package com.allez.lang.exception;
 
 import com.allez.lang.enums.ResultCode;
-import lombok.*;
+import lombok.Getter;
 
 /**
  * @author chenyu
@@ -14,7 +14,7 @@ public class BusinessException extends RuntimeException {
     private final Integer code;
 
 
-    public BusinessException(Integer code,String msg) {
+    public BusinessException(Integer code, String msg) {
         super(msg);
         this.code = code;
     }
@@ -24,7 +24,7 @@ public class BusinessException extends RuntimeException {
         this.code = code;
     }
 
-    public BusinessException(String msg){
+    public BusinessException(String msg) {
         super(msg);
         this.code = ResultCode.FAIL.getCode();
     }
