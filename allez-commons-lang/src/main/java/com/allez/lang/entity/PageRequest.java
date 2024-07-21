@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
- * @author: chenGuanXi
+ * @author: chenyu
  * @create: 2024-07-19 00:46
  * @Description:
  */
@@ -58,5 +58,17 @@ public class PageRequest implements Serializable {
         return new PageRequest(offset, limit);
     }
 
+    public PageRequest setSort(Sort sort) {
+        this.sort = sort;
+        return this;
+    }
+
+    public static void main(String[] args) {
+        PageRequest pageRequest = PageRequest.of(1, 2)
+                .setSort(
+                        Sort.by(Sort.OrderItem.desc("ccc"))
+                                .and(Sort.OrderItem.asc("aaa"))
+                );
+    }
 
 }
