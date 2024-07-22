@@ -14,6 +14,14 @@
 
     <modules>
         <module>allez-commons-starter-lock</module>
+        <module>allez-commons-starter-web</module>
+        <module>allez-commons-starter-feign</module>
+        <module>allez-commons-starter-dubbo</module>
+        <module>allez-commons-starter-rabbitmq</module>
+        <module>allez-commons-starter-rocketmq</module>
+        <module>allez-commons-starter-mybatis</module>
+        <module>allez-commons-starter-mongo</module>
+        <module>allez-commons-starter-redis</module>
     </modules>
 
     <properties>
