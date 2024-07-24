@@ -12,6 +12,7 @@
         <module>allez-commons-dependencies</module>
         <module>allez-commons-lang</module>
         <module>allez-commons-starter</module>
+        <module>allez-web-test</module>
 
     </modules>
 

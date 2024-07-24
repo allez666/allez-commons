@@ -9,27 +9,13 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>allez-commons-starter</artifactId>
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>allez-commons-starter-lock</module>
-        <module>allez-commons-starter-application</module>
-        <module>allez-commons-starter-feign</module>
-        <module>allez-commons-starter-dubbo</module>
-        <module>allez-commons-starter-rabbitmq</module>
-        <module>allez-commons-starter-rocketmq</module>
-        <module>allez-commons-starter-mybatis</module>
-        <module>allez-commons-starter-mongo</module>
-        <module>allez-commons-starter-redis</module>
-    </modules>
+    <artifactId>allez-web-test</artifactId>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -41,11 +27,14 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
     <dependencies>
+
         <dependency>
             <groupId>com.allez</groupId>
-            <artifactId>allez-commons-lang</artifactId>
+            <artifactId>allez-commons-starter-application</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
     </dependencies>
 </project>
