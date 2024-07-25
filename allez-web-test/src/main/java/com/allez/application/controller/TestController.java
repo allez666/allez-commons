@@ -1,8 +1,12 @@
 package com.allez.application.controller;
 
+import com.allez.web.entity.RequestDetailInfo;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author chenyu
@@ -13,8 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/test")
 public class TestController {
 
-    @GetMapping("/hello")
-    public String hello() {
+    @PostMapping("/hello")
+    public String hello(HttpServletRequest servletRequest) {
+        RequestDetailInfo requestDetailInfo = RequestDetailInfo.of(servletRequest);
         return "Hello world!";
     }
 

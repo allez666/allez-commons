@@ -17,13 +17,13 @@ public class RequestLoggingAspect {
 
 
     @Pointcut(value = "execution(* com.allez..controller..*.*(..))" +
-            "|| @annotation(org.springframework.web.bind.annotation.RequestMapping)" )
-    private void controllerPointCut(){
+            "|| @annotation(org.springframework.web.bind.annotation.RequestMapping)")
+    private void controllerPointCut() {
     }
 
 
     @Around("controllerPointCut()")
-    public Object handleControllerAround(ProceedingJoinPoint pjp){
-
+    public Object handleControllerAround(ProceedingJoinPoint pjp) {
+        return null;
     }
 }
