@@ -1,8 +1,6 @@
 package com.allez.web;
 
-import com.allez.web.entity.RequestHeaderParam;
 import com.allez.web.entity.RequestDetailInfo;
-import com.google.gson.Gson;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -15,6 +13,21 @@ import javax.servlet.http.HttpServletResponse;
  * @description 全局请求上下文
  */
 public class GlobalRequestContextHolder {
+
+    private static final ThreadLocal<RequestDetailInfo> REQUEST_DETAIL_INFO_THREAD_LOCAL = new ThreadLocal<>();
+
+    public static void setRequestDetailInfo(RequestDetailInfo requestDetailInfo) {
+        REQUEST_DETAIL_INFO_THREAD_LOCAL.set(requestDetailInfo);
+    }
+
+    public static void getRequestDetailInfo() {
+        REQUEST_DETAIL_INFO_THREAD_LOCAL.get();
+    }
+
+    public static void removeRequestDetailInfo() {
+        REQUEST_DETAIL_INFO_THREAD_LOCAL.remove();
+    }
+
 
     public static HttpServletRequest getServletRequest() {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -31,8 +44,6 @@ public class GlobalRequestContextHolder {
         }
         return attributes.getResponse();
     }
-
-
 
 
 }

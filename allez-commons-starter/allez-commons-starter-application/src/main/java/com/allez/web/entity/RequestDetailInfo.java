@@ -3,9 +3,12 @@ package com.allez.web.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,6 +31,8 @@ public class RequestDetailInfo implements Serializable {
 
     private String body;
 
+//    private Map<String,Object> path
+
 
     public static RequestDetailInfo of(HttpServletRequest httpServletRequest) {
         RequestDetailInfo requestDetailInfo = new RequestDetailInfo();
@@ -37,6 +42,14 @@ public class RequestDetailInfo implements Serializable {
 //        requestDetailInfo.setQueryParamMap();
 //        requestDetailInfo.setBody();
         return requestDetailInfo;
+    }
+
+    public static Map<String, Object> buildFormDataMap(HttpServletRequest servletRequest) {
+        if (servletRequest instanceof MultipartHttpServletRequest) {
+            return new HashMap<>();
+        }
+//        ((MultipartHttpServletRequest)servletRequest).getparam
+        return new HashMap<>();
     }
 
     public static String getUrl(HttpServletRequest servletRequest) {

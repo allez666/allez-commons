@@ -29,8 +29,6 @@ public class RequestHeaderParam implements Serializable {
 
     private String sign;
 
-    private String contentType;
-
 
     public static RequestHeaderParam of(HttpServletRequest servletRequest) {
         JSONObject jsonObject = new JSONObject();
