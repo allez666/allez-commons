@@ -16,8 +16,9 @@ import java.util.Map;
 public class TestController {
 
     @PostMapping("{id}/hello")
-    public String hello(HttpServletRequest servletRequest, TestReq req, @PathVariable("id") long id) {
-        RequestDetailInfo requestDetailInfo = RequestDetailInfo.of(servletRequest);
+    public String hello( TestReq req, @PathVariable("id") long id,HttpServletRequest httpServletRequest) {
+//        RequestDetailInfo requestDetailInfo = RequestDetailInfo.of();
+        Map<String, String[]> parameterMap = httpServletRequest.getParameterMap();
         return "Hello world!";
     }
 

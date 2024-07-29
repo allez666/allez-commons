@@ -24,5 +24,6 @@ public class TestReq {
 
     private MultipartFile file;
 
+    private MultipartFile fileTemp;
 
 }
