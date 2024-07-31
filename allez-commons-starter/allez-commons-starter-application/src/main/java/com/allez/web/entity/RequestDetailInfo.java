@@ -1,7 +1,5 @@
 package com.allez.web.entity;
 
-import cn.hutool.core.net.url.UrlQuery;
-import com.alibaba.fastjson2.JSON;
 import com.allez.web.wrapper.GlobalHttpServletRequestWrapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,23 +30,20 @@ public class RequestDetailInfo implements Serializable {
 
     private String url;
 
-    private Map<String, Object> formDataMap;
+    private String contentType;
 
-    private Map<CharSequence, CharSequence> queryParamMap;
-
-    private Object body;
+    private String method;
 
 
     public static RequestDetailInfo of(GlobalHttpServletRequestWrapper httpServletRequest) {
         RequestDetailInfo requestDetailInfo = new RequestDetailInfo();
         requestDetailInfo.setHeaderParam(RequestHeaderParam.of(httpServletRequest));
         requestDetailInfo.setUrl(getUrl(httpServletRequest));
-        requestDetailInfo.setFormDataMap(buildFormDataMap(httpServletRequest));
-        UrlQuery urlQuery = UrlQuery.of(httpServletRequest.getQueryString(), StandardCharsets.UTF_8);
-        requestDetailInfo.setQueryParamMap(urlQuery.getQueryMap());
-
-        String jsonBody = httpServletRequest.getBody();
-        requestDetailInfo.setBody(JSON.parseObject(jsonBody));
+//        requestDetailInfo.setFormDataMap(buildFormDataMap(httpServletRequest));
+//        UrlQuery urlQuery = UrlQuery.of(httpServletRequest.getQueryString(), StandardCharsets.UTF_8);
+        requestDetailInfo.setMethod(httpServletRequest.getMethod());
+        requestDetailInfo.setContentType(httpServletRequest.getContentType());
+//        requestDetailInfo.setQueryParamMap(urlQuery.getQueryMap());
         return requestDetailInfo;
     }
 

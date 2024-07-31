@@ -20,8 +20,8 @@ public class GlobalRequestContextHolder {
         REQUEST_DETAIL_INFO_THREAD_LOCAL.set(requestDetailInfo);
     }
 
-    public static void getRequestDetailInfo() {
-        REQUEST_DETAIL_INFO_THREAD_LOCAL.get();
+    public static RequestDetailInfo getRequestDetailInfo() {
+        return REQUEST_DETAIL_INFO_THREAD_LOCAL.get();
     }
 
     public static void removeRequestDetailInfo() {
@@ -43,6 +43,10 @@ public class GlobalRequestContextHolder {
             return null;
         }
         return attributes.getResponse();
+    }
+
+    public static void clear(){
+        REQUEST_DETAIL_INFO_THREAD_LOCAL.remove();
     }
 
 

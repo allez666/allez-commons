@@ -1,7 +1,9 @@
 package com.allez.application.controller;
 
-import com.allez.web.entity.RequestDetailInfo;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -16,7 +18,7 @@ import java.util.Map;
 public class TestController {
 
     @PostMapping("{id}/hello")
-    public String hello( @RequestBody TestReq req, @PathVariable("id") long id,HttpServletRequest httpServletRequest) {
+    public String hello(TestReq req, @PathVariable("id") long id, HttpServletRequest httpServletRequest) {
 //        RequestDetailInfo requestDetailInfo = RequestDetailInfo.of();
         Map<String, String[]> parameterMap = httpServletRequest.getParameterMap();
         return "Hello world!";
