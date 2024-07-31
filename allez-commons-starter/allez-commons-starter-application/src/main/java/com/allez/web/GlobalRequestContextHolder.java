@@ -1,10 +1,10 @@
 package com.allez.web;
 
 import com.allez.web.entity.RequestDetailInfo;
+import com.allez.web.wrapper.GlobalHttpServletRequestWrapper;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -29,12 +29,12 @@ public class GlobalRequestContextHolder {
     }
 
 
-    public static HttpServletRequest getServletRequest() {
+    public static GlobalHttpServletRequestWrapper getServletRequest() {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (attributes == null) {
             return null;
         }
-        return attributes.getRequest();
+        return (GlobalHttpServletRequestWrapper) attributes.getRequest();
     }
 
     public static HttpServletResponse getServletResponse() {

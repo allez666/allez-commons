@@ -1,12 +1,14 @@
 package com.allez.web.entity;
 
 import cn.hutool.core.net.url.UrlQuery;
+import com.alibaba.fastjson2.JSON;
+import com.allez.web.wrapper.GlobalHttpServletRequestWrapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -35,24 +37,28 @@ public class RequestDetailInfo implements Serializable {
 
     private Map<CharSequence, CharSequence> queryParamMap;
 
-    private String body;
+    private Object body;
 
 
-    public static RequestDetailInfo of(HttpServletRequest httpServletRequest) {
+    public static RequestDetailInfo of(GlobalHttpServletRequestWrapper httpServletRequest) {
         RequestDetailInfo requestDetailInfo = new RequestDetailInfo();
         requestDetailInfo.setHeaderParam(RequestHeaderParam.of(httpServletRequest));
         requestDetailInfo.setUrl(getUrl(httpServletRequest));
         requestDetailInfo.setFormDataMap(buildFormDataMap(httpServletRequest));
         UrlQuery urlQuery = UrlQuery.of(httpServletRequest.getQueryString(), StandardCharsets.UTF_8);
         requestDetailInfo.setQueryParamMap(urlQuery.getQueryMap());
-//        requestDetailInfo.setBody();
+
+        String jsonBody = httpServletRequest.getBody();
+        requestDetailInfo.setBody(JSON.parseObject(jsonBody));
         return requestDetailInfo;
     }
 
 
     public static Map<String, Object> buildFormDataMap(HttpServletRequest servletRequest) {
         Map<String, Object> map = new HashMap<>();
-
+        if (!StringUtils.startsWithIgnoreCase(servletRequest.getContentType(), ("multipart/"))) {
+            return map;
+        }
         try {
             for (Part part : servletRequest.getParts()) {
                 String name = part.getName();
