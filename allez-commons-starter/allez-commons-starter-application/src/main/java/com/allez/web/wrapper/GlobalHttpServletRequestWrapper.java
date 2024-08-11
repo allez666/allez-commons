@@ -1,6 +1,5 @@
 package com.allez.web.wrapper;
 
-import cn.hutool.core.stream.StreamUtil;
 import org.springframework.util.StreamUtils;
 
 import javax.servlet.ReadListener;
@@ -12,6 +11,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Enumeration;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author chenyu
@@ -21,6 +23,8 @@ import java.nio.charset.StandardCharsets;
 public class GlobalHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
     private final byte[] body;
+
+    private final Map<String, String[]> paramMap;
 
     /**
      * Constructs a request object wrapping the given request.
@@ -32,9 +36,18 @@ public class GlobalHttpServletRequestWrapper extends HttpServletRequestWrapper {
         super(request);
         try {
             body = StreamUtils.copyToByteArray(request.getInputStream());
+            paramMap = request.getParameterMap();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public String[] getParameterValues(String name) {
+        if (Objects.isNull(paramMap)) {
+            return null;
+        }
+        return this.paramMap.get(name);
     }
 
     @Override
@@ -68,7 +81,7 @@ public class GlobalHttpServletRequestWrapper extends HttpServletRequestWrapper {
         return new BufferedReader(new InputStreamReader(getInputStream()));
     }
 
-    public String getBody(){
+    public String getBody() {
         return new String(body, StandardCharsets.UTF_8);
     }
 }

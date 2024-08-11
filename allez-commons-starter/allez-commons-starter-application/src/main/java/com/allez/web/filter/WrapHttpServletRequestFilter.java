@@ -30,7 +30,8 @@ public class WrapHttpServletRequestFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        httpRequest.getParameterMap();
+//        Collection<Part> parts1 = httpRequest.getParts();
+//        httpRequest.getParameterMap();
         GlobalHttpServletRequestWrapper globalHttpServletRequestWrapper = new GlobalHttpServletRequestWrapper(httpRequest);
         try {
             Collection<Part> parts = globalHttpServletRequestWrapper.getParts();
