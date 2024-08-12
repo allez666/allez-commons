@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>allez-commons-starter-lock</module>
         <module>allez-commons-starter-application</module>
         <module>allez-commons-starter-feign</module>
         <module>allez-commons-starter-dubbo</module>
