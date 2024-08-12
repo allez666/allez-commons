@@ -1,7 +1,7 @@
-package com.allez.web;
+package com.allez.application;
 
-import com.allez.web.entity.RequestDetailInfo;
-import com.allez.web.wrapper.GlobalHttpServletRequestWrapper;
+import com.allez.application.entity.RequestDetailInfo;
+import com.allez.application.wrapper.GlobalHttpServletRequestWrapper;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 

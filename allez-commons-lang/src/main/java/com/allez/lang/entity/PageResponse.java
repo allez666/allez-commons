@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
- * @author: chenGuanXi
+ * @author: chenyu
  * @create: 2024-07-22 00:49
  * @Description:
  */
@@ -32,7 +32,7 @@ public class PageResponse<T> implements Serializable {
 
     private long totalPage;
 
-    private Collection<T> result;
+    private Collection<T> data;
 
     private Serializable extra;
 
@@ -42,21 +42,25 @@ public class PageResponse<T> implements Serializable {
         this.pageSize = pageSize;
     }
 
-    public PageResponse(int pageNumber, int pageSize, long totalCount, Collection<T> result, Serializable extra) {
+    public PageResponse(int pageNumber, int pageSize, long totalCount, Collection<T> data, Serializable extra) {
         this.pageNumber = pageNumber;
         this.pageSize = pageSize;
         this.totalCount = totalCount;
-        this.result = result;
+        this.data = data;
         this.extra = extra;
         this.totalPage = calculateTotalPage();
     }
 
-    public PageResponse(int pageNumber, int pageSize, long totalCount, Collection<T> result) {
-        this(pageNumber, pageSize, totalCount, result, null);
+    public PageResponse(int pageNumber, int pageSize, long totalCount, Collection<T> data) {
+        this(pageNumber, pageSize, totalCount, data, null);
     }
 
     public static <T> PageResponse<T> of(int pageNumber, int pageSize, long totalCount, Collection<T> data) {
         return new PageResponse<>(pageNumber, pageSize, totalCount, data);
+    }
+
+    public static <T> PageResponse<T> of(int pageNumber, int pageSize, long totalCount, Collection<T> data, Serializable extra) {
+        return new PageResponse<>(pageNumber, pageSize, totalCount, data, extra);
     }
 
     public static <T> PageResponse<T> of(PageRequest pageRequest, long totalCount, Collection<T> result) {
@@ -72,7 +76,7 @@ public class PageResponse<T> implements Serializable {
     }
 
     public static <T> PageResponse<T> from(PageResponse<T> pageResponse) {
-        return of(pageResponse.getPageNumber(), pageResponse.getPageSize(), pageResponse.getTotalCount(), pageResponse.getResult());
+        return of(pageResponse.getPageNumber(), pageResponse.getPageSize(), pageResponse.getTotalCount(), pageResponse.getData());
     }
 
     public static <T> PageResponse<T> empty(PageRequest pageRequest) {
@@ -84,18 +88,19 @@ public class PageResponse<T> implements Serializable {
     }
 
 
-    public <R> List<R> mapToList(Function<T, R> function) {
-        return this.getResult().stream().map(function).collect(Collectors.toList());
+    public <R> List<R> mapDataToList(Function<T, R> function) {
+        return this.getData().stream().map(function).collect(Collectors.toList());
     }
 
-    public <R> Set<R> mapToSet(Function<T, R> function) {
-        return this.getResult().stream().map(function).collect(Collectors.toSet());
+    public <R> Set<R> mapDataToSet(Function<T, R> function) {
+        return this.getData().stream().map(function).collect(Collectors.toSet());
     }
 
     public <R> PageResponse<R> mapToPage(Function<T, R> function) {
         return of(this.getPageNumber(), this.getPageSize(),
                 this.getTotalCount(),
-                this.getResult().stream().map(function).collect(Collectors.toList())
+                this.getData().stream().map(function).collect(Collectors.toList()),
+                this.getExtra()
         );
     }
 

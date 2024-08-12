@@ -1,4 +1,4 @@
-package com.allez.web.config;
+package com.allez.application.config;
 
 import com.google.gson.*;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +9,7 @@ import java.lang.reflect.Type;
 import java.util.Objects;
 
 /**
- * @author: chenGuanXi
+ * @author: chenyu
  * @create: 2024-07-27 22:03
  * @Description:
  */

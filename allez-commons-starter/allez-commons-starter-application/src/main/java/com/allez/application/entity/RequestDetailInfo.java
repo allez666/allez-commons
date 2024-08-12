@@ -1,6 +1,6 @@
-package com.allez.web.entity;
+package com.allez.application.entity;
 
-import com.allez.web.wrapper.GlobalHttpServletRequestWrapper;
+import com.allez.application.wrapper.GlobalHttpServletRequestWrapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

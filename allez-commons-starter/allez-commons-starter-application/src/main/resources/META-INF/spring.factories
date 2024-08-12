@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.allez.web.config.ApplicationAutoConfiguration
+  com.allez.application.config.ApplicationAutoConfiguration

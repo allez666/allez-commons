@@ -1,4 +1,4 @@
-package com.allez.web.filter;
+package com.allez.application.filter;
 
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;

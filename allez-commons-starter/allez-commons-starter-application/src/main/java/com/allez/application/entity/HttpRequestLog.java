@@ -1,4 +1,4 @@
-package com.allez.web.entity;
+package com.allez.application.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.Map;
 
 /**
- * @author: chenGuanXi
+ * @author: chenyu
  * @create: 2024-08-01 01:39
  * @Description:
  */

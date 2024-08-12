@@ -1,4 +1,4 @@
-package com.allez.web.wrapper;
+package com.allez.application.wrapper;
 
 import org.springframework.util.StreamUtils;
 
@@ -11,9 +11,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author chenyu
@@ -35,18 +35,33 @@ public class GlobalHttpServletRequestWrapper extends HttpServletRequestWrapper {
     public GlobalHttpServletRequestWrapper(HttpServletRequest request) {
         super(request);
         try {
-            body = StreamUtils.copyToByteArray(request.getInputStream());
+            // getParameterMap 要在wrap流之前 ，不然如果是表单提交会丢失表单参数
+            // 原因：getParameterMap时 会去解析参数 parseParameters，里面会去解析表单参数，如果流已经读取，那就不解析表单参数。
+            // 源码：Request.java:3167
             paramMap = request.getParameterMap();
+            body = StreamUtils.copyToByteArray(request.getInputStream());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
+    public String getParameter(String name) {
+        return super.getParameter(name);
+    }
+
+    @Override
+    public Map<String, String[]> getParameterMap() {
+        return this.paramMap;
+    }
+
+    @Override
+    public Enumeration<String> getParameterNames() {
+        return Collections.enumeration(this.paramMap.keySet());
+    }
+
+    @Override
     public String[] getParameterValues(String name) {
-        if (Objects.isNull(paramMap)) {
-            return null;
-        }
         return this.paramMap.get(name);
     }
 

@@ -7,7 +7,7 @@ import lombok.Getter;
 /**
  * @author chenyu
  * @date 2023/12/21 19:46
- * @description
+ * @description  200就是成功，-1失败，-2toast提示
  */
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

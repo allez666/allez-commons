@@ -1,4 +1,4 @@
-package com.allez.web.entity;
+package com.allez.application.entity;
 
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;

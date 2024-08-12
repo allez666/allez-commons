@@ -1,4 +1,4 @@
-package com.allez.web.config;
+package com.allez.application.config;
 
 import org.springframework.context.annotation.ComponentScan;
 
@@ -7,6 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
  * @date 2024/7/24 下午3:24
  * @description
  */
-@ComponentScan(basePackages = "com.allez.web.*")
+@ComponentScan(basePackages = "com.allez.application.*")
 public class ApplicationAutoConfiguration {
 }
