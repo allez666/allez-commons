@@ -1,5 +1,7 @@
 package com.allez.application.entity;
 
+import cn.hutool.core.net.url.UrlQuery;
+import com.allez.application.util.HttpServletRequestParseUtils;
 import com.allez.application.wrapper.GlobalHttpServletRequestWrapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,46 +38,14 @@ public class RequestDetailInfo implements Serializable {
     private String method;
 
 
-    public static RequestDetailInfo of(GlobalHttpServletRequestWrapper httpServletRequest) {
+    public static RequestDetailInfo of(HttpServletRequest httpServletRequest) {
         RequestDetailInfo requestDetailInfo = new RequestDetailInfo();
-        requestDetailInfo.setHeaderParam(RequestHeaderParam.of(httpServletRequest));
-        requestDetailInfo.setUrl(getUrl(httpServletRequest));
-//        requestDetailInfo.setFormDataMap(buildFormDataMap(httpServletRequest));
-//        UrlQuery urlQuery = UrlQuery.of(httpServletRequest.getQueryString(), StandardCharsets.UTF_8);
+        RequestHeaderParam requestHeaderParam = HttpServletRequestParseUtils.parseHeader(httpServletRequest, RequestHeaderParam.class);
+        requestDetailInfo.setHeaderParam(requestHeaderParam);
+        requestDetailInfo.setUrl(HttpServletRequestParseUtils.parseUrl(httpServletRequest));
         requestDetailInfo.setMethod(httpServletRequest.getMethod());
         requestDetailInfo.setContentType(httpServletRequest.getContentType());
-//        requestDetailInfo.setQueryParamMap(urlQuery.getQueryMap());
         return requestDetailInfo;
-    }
-
-
-    public static Map<String, Object> buildFormDataMap(HttpServletRequest servletRequest) {
-        Map<String, Object> map = new HashMap<>();
-        if (!StringUtils.startsWithIgnoreCase(servletRequest.getContentType(), ("multipart/"))) {
-            return map;
-        }
-        try {
-            for (Part part : servletRequest.getParts()) {
-                String name = part.getName();
-                String parameter;
-                String headerValue = part.getHeader(HttpHeaders.CONTENT_DISPOSITION);
-                ContentDisposition disposition = ContentDisposition.parse(headerValue);
-                String filename = disposition.getFilename();
-                if (filename != null) {
-                    parameter = filename;
-                } else {
-                    parameter = servletRequest.getParameter(name);
-                }
-                map.put(name, parameter);
-            }
-            return map;
-        } catch (IOException | ServletException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static String getUrl(HttpServletRequest servletRequest) {
-        return servletRequest.getContextPath() + servletRequest.getServletPath();
     }
 
 

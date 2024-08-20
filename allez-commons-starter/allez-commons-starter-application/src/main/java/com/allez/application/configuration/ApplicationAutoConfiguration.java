@@ -1,4 +1,4 @@
-package com.allez.application.config;
+package com.allez.application.configuration;
 
 import org.springframework.context.annotation.ComponentScan;
 

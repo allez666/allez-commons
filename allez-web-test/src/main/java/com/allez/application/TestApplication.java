@@ -1,8 +1,8 @@
 package com.allez.application;
 
+import com.allez.application.annotation.EnableDecryptRequestParam;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 
 /**
  * @author chenyu

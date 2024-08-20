@@ -12,9 +12,6 @@ import java.io.IOException;
  * @date 2024/7/31 下午2:46
  * @description
  */
-@Order(-1000)
-@WebFilter(urlPatterns = "/*", filterName = "traceIdFilter")
-@Component
 public class TraceIdFilter implements Filter {
 
 

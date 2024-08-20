@@ -14,6 +14,9 @@ import java.util.Objects;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum BoooleanEnum implements IValue<Integer> {
+    FALSE(0, false, "false"),
+
+    TRUE(1, true, "true"),
     ;
 
     private final int intValue;

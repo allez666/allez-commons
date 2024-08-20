@@ -55,7 +55,6 @@ public class RequestLoggingAspect {
 
         HttpRequestLog requestLog = HttpRequestLog
                 .builder()
-                // todo 打印的url 把 路径参数去掉，变成 ${id},更加直观一点
                 .url(GlobalRequestContextHolder.getRequestDetailInfo().getUrl())
                 .rt(SystemClock.now() - startTime)
                 .paramMap(paramMap)

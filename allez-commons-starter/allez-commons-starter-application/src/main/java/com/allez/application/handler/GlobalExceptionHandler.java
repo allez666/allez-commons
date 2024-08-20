@@ -23,10 +23,6 @@ public class GlobalExceptionHandler {
         return Result.remind(businessException.getMessage());
     }
 
-    /**
-     * 处理参数校验异常
-     */
-
     @ExceptionHandler(Exception.class)
     public Result<Void> handleException(Exception e) {
         log.error("exception", e);

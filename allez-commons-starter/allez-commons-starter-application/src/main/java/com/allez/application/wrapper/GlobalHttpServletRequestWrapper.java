@@ -1,5 +1,6 @@
 package com.allez.application.wrapper;
 
+import com.allez.application.entity.RequestDetailInfo;
 import org.springframework.util.StreamUtils;
 
 import javax.servlet.ReadListener;

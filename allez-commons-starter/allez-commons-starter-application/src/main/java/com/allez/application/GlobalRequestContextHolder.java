@@ -32,7 +32,7 @@ public class GlobalRequestContextHolder {
     public static GlobalHttpServletRequestWrapper getServletRequest() {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (attributes == null) {
-            return null;
+            throw new IllegalStateException("RequestContextHolder is not set");
         }
         return (GlobalHttpServletRequestWrapper) attributes.getRequest();
     }
@@ -40,12 +40,12 @@ public class GlobalRequestContextHolder {
     public static HttpServletResponse getServletResponse() {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (attributes == null) {
-            return null;
+            throw new IllegalStateException("RequestContextHolder is not set");
         }
         return attributes.getResponse();
     }
 
-    public static void clear(){
+    public static void clear() {
         REQUEST_DETAIL_INFO_THREAD_LOCAL.remove();
     }
 

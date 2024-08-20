@@ -1,4 +1,4 @@
-package com.allez.application.config;
+package com.allez.application.configuration;
 
 import com.google.gson.*;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +14,7 @@ import java.util.Objects;
  * @Description:
  */
 @Configuration
-public class GsonConfig {
+public class GsonAutoConfiguration {
 
 
     @Bean("gson")
