@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author chenyu
@@ -43,6 +44,13 @@ public class HttpServletRequestParseUtils {
         GlobalHttpServletRequestWrapper servletRequest = GlobalRequestContextHolder.getServletRequest();
         Map<String, Object> stringObjectMap = parseFormData(servletRequest);
         return JSON.parseObject(JSON.toJSONString(stringObjectMap), clazz);
+    }
+
+    public static boolean isMultipartFile(Part part) {
+        String headerValue = part.getHeader(HttpHeaders.CONTENT_DISPOSITION);
+        ContentDisposition disposition = ContentDisposition.parse(headerValue);
+        String filename = disposition.getFilename();
+        return Objects.nonNull(filename);
     }
 
     public static Map<String, Object> parseFormData(HttpServletRequest servletRequest) {
@@ -93,8 +101,8 @@ public class HttpServletRequestParseUtils {
 
     public static Map<String, String> parseUrlParam(HttpServletRequest servletRequest) {
         Map<String, String> map = new HashMap<>();
-
-        UrlQuery urlQuery = UrlQuery.of(servletRequest.getQueryString(), StandardCharsets.UTF_8);
+        String queryString = servletRequest.getQueryString();
+        UrlQuery urlQuery = UrlQuery.of(queryString, StandardCharsets.UTF_8);
         Map<CharSequence, CharSequence> queryMap = urlQuery.getQueryMap();
         if (CollUtil.isEmpty(queryMap)) {
             return map;

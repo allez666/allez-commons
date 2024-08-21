@@ -64,10 +64,14 @@ public class RequestParamDecryptFilter implements Filter {
     }
 
     public static void main(String[] args) throws Exception {
+        System.out.println(encrypt("aaa"));
+        System.out.println(encrypt("111"));
+        System.out.println(encrypt("bbb"));
+        System.out.println(encrypt("222"));
         System.out.println(encrypt("ccc"));
         System.out.println(encrypt("333"));
         System.out.println(encrypt("ddd"));
-        System.out.println(encrypt("222"));
+        System.out.println(encrypt("444"));
     }
 
 }

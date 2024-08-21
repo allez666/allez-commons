@@ -1,17 +1,14 @@
 package com.allez.application.wrapper;
 
+import cn.hutool.core.util.StrUtil;
 import com.allez.application.filter.RequestParamDecryptFilter;
+import com.allez.application.util.HttpServletRequestParseUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author chenyu
@@ -36,14 +33,10 @@ public class HttpServletDecryptRequestParamWrapper extends GlobalHttpServletRequ
      */
     public HttpServletDecryptRequestParamWrapper(HttpServletRequest request) {
         super(request);
-        try {
-            this.headerMap = new HashMap<>();
-            this.paramMap = decryptParamMap(request);
-            this.parts = request.getParts();
-            this.urlQueryString = request.getQueryString();
-        } catch (IOException | ServletException e) {
-            throw new RuntimeException(e);
-        }
+        this.headerMap = new HashMap<>();
+        this.paramMap = decryptParamMap(request);
+        this.parts = decryptParts(request);
+        this.urlQueryString = request.getQueryString();
     }
 
     @Override
@@ -61,31 +54,41 @@ public class HttpServletDecryptRequestParamWrapper extends GlobalHttpServletRequ
         return this.parts;
     }
 
+    public Collection<Part> decryptParts(HttpServletRequest request) {
+        try {
+            Enumeration<String> attributeNames = request.getAttributeNames();
+            Collection<Part> requestParts = request.getParts();
+            for (Part requestPart : requestParts) {
+                System.out.println();
+            }
+
+        } catch (IOException | ServletException e) {
+            throw new RuntimeException(e);
+        }
+        return new ArrayList<>();
+    }
+
 
     private Map<String, String[]> decryptParamMap(HttpServletRequest request) {
+        Map<String, String> urlParamMap = HttpServletRequestParseUtils.parseUrlParam(request);
+
         Map<String, String[]> resultMap = new HashMap<>();
-        Map<String, String[]> parameterMap = request.getParameterMap();
-
-        for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
-            String key = entry.getKey();
-            String[] value = entry.getValue();
-
+        for (Map.Entry<String, String> entry : urlParamMap.entrySet()) {
             try {
+                String key = entry.getKey();
                 String decryptKey = RequestParamDecryptFilter.decrypt(key);
-                if (Objects.nonNull(value)) {
-                    String[] decryptValue = new String[value.length];
-                    for (int i = 0; i < value.length; i++) {
-                        decryptValue[i] = RequestParamDecryptFilter.decrypt(URLDecoder.decode(value[i], StandardCharsets.UTF_8));
-                    }
-                    resultMap.put(decryptKey, decryptValue);
+                String value = entry.getValue();
+                String decryptValue;
+                if (StrUtil.isBlank(value)) {
+                    decryptValue = StrUtil.EMPTY;
+                } else {
+                    decryptValue = RequestParamDecryptFilter.decrypt(value);
                 }
-
+                resultMap.put(decryptKey, new String[]{decryptValue});
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-
         }
-
         return resultMap;
     }
 
