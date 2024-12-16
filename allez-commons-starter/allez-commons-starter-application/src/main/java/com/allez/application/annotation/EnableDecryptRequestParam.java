@@ -1,9 +1,6 @@
 package com.allez.application.annotation;
 
 
-import com.allez.application.configuration.RequestParamDecryptConfiguration;
-import org.springframework.context.annotation.Import;
-
 import java.lang.annotation.*;
 
 /**
@@ -14,6 +11,5 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import(RequestParamDecryptConfiguration.class)
 public @interface EnableDecryptRequestParam {
 }

@@ -4,7 +4,9 @@ import cn.hutool.core.date.SystemClock;
 import cn.hutool.core.util.ArrayUtil;
 import com.allez.application.GlobalRequestContextHolder;
 import com.allez.application.entity.HttpRequestLog;
+import com.allez.application.serializer.gson.MultipartFileLogJsonSerializer;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -12,8 +14,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -28,11 +30,14 @@ import java.util.function.Predicate;
  */
 @Slf4j
 @Aspect
-@Component
 public class RequestLoggingAspect {
 
-    @Resource
-    private Gson gson;
+    /**
+     * 对接口文件 打印的格式特殊处理
+     */
+    private static final Gson GSON = new GsonBuilder()
+            .registerTypeAdapter(MultipartFile.class, new MultipartFileLogJsonSerializer())
+            .create();
 
     private final Predicate<Object> logPredicate = e -> !(e instanceof HttpServletRequest || e instanceof HttpServletResponse);
 
@@ -61,7 +66,7 @@ public class RequestLoggingAspect {
                 .result(logResult)
                 .build();
 
-        log.info("requestLog:{}", gson.toJson(requestLog));
+        log.info("requestLog:{}", GSON.toJson(requestLog));
         return result;
     }
 
@@ -73,7 +78,6 @@ public class RequestLoggingAspect {
         String[] parameterNames = ((MethodSignature) pjp.getSignature()).getParameterNames();
 
         Map<String, Object> paramMap = new HashMap<>(args.length);
-
 
         for (int i = 0; i < parameterNames.length; i++) {
             String parameterName = parameterNames[i];

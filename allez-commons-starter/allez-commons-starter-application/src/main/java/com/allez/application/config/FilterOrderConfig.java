@@ -11,7 +11,7 @@ public class FilterOrderConfig {
 
     public static final Integer TRACE_ID_FILTER_ORDER = Ordered.HIGHEST_PRECEDENCE;
 
-    public static final Integer WRAP_HTTP_SERVLET_REQUEST_FILTER_ORDER = Ordered.HIGHEST_PRECEDENCE + 1;
+    public static final Integer CACHE_CONTENT_FILTER_ORDER = Ordered.HIGHEST_PRECEDENCE + 1;
 
     public static final Integer REQUEST_PARAM_ENCRYPT_FILTER_ORDER = Ordered.HIGHEST_PRECEDENCE + 2;
 
