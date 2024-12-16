@@ -27,5 +27,6 @@ public class WrapHttpServletRequestFilter implements Filter {
         ContentCachingRequestWrapper contentCachingRequestWrapper = new ContentCachingRequestWrapper(httpRequest);
         ContentCachingResponseWrapper contentCachingResponseWrapper = new ContentCachingResponseWrapper(httpServletResponse);
         chain.doFilter(contentCachingRequestWrapper, contentCachingResponseWrapper);
+        contentCachingResponseWrapper.copyBodyToResponse();
     }
 }
