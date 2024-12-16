@@ -21,7 +21,7 @@ public class ApplicationAutoConfiguration {
      * 全局的gson bean
      * 业务系统可以自定义
      */
-    @Bean("gson")
+    @Bean("httpLogGson")
     @ConditionalOnMissingBean(Gson.class)
     public Gson getGson() {
         return new Gson();
