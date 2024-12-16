@@ -17,15 +17,6 @@ import javax.servlet.Filter;
 public class ApplicationAutoConfiguration {
 
 
-    /**
-     * 全局的gson bean
-     * 业务系统可以自定义
-     */
-    @Bean("httpLogGson")
-    @ConditionalOnMissingBean(Gson.class)
-    public Gson getGson() {
-        return new Gson();
-    }
 
     @Bean
     @ConditionalOnMissingBean(ContentCachingRequestFilter.class)
