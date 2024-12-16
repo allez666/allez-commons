@@ -27,6 +27,9 @@ public class WrapHttpServletRequestFilter implements Filter {
         ContentCachingRequestWrapper contentCachingRequestWrapper = new ContentCachingRequestWrapper(httpRequest);
         ContentCachingResponseWrapper contentCachingResponseWrapper = new ContentCachingResponseWrapper(httpServletResponse);
         chain.doFilter(contentCachingRequestWrapper, contentCachingResponseWrapper);
+        //将写入的数据缓存起来了，而没有同时写到OutputStream中。这导致返回结果一直为空。
+        // 解决方法是，在最后一定要手动调用它的copyBodyToResponse方法，将缓存的数据写入输出流里。
+        //调用完copyBodyToResponse后，缓存又被清空了，因此getContentAsByteArray一定要在之前调用，才能获取到缓存的返回体。
         contentCachingResponseWrapper.copyBodyToResponse();
     }
 }
