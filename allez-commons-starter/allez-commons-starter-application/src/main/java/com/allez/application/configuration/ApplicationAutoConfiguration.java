@@ -2,7 +2,6 @@ package com.allez.application.configuration;
 
 import com.allez.application.config.FilterOrderConfig;
 import com.allez.application.filter.ContentCachingRequestFilter;
-import com.allez.application.filter.WrapHttpServletRequestFilter;
 import com.google.gson.Gson;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -28,21 +27,14 @@ public class ApplicationAutoConfiguration {
         return new Gson();
     }
 
-//    @Bean
+    @Bean
     @ConditionalOnMissingBean(ContentCachingRequestFilter.class)
     public ContentCachingRequestFilter contentCachingRequestFilter() {
         return new ContentCachingRequestFilter();
     }
+    // todo http traceId filter
 
-    @Bean
-    @ConditionalOnMissingBean(WrapHttpServletRequestFilter.class)
-    public FilterRegistrationBean<Filter> wrapHttpServletRequestFilter() {
-        FilterRegistrationBean<Filter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new WrapHttpServletRequestFilter());
-        registrationBean.addUrlPatterns("/*");
-        registrationBean.setOrder(FilterOrderConfig.CACHE_CONTENT_FILTER_ORDER);
-        return registrationBean;
-    }
+    // todo 可控加密 ,实现 @ConditionalOnAnnotation
 
 
 
