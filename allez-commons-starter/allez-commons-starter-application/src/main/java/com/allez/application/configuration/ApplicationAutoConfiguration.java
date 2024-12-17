@@ -26,7 +26,7 @@ public class ApplicationAutoConfiguration {
     // todo 可控加密 ,实现 @ConditionalOnAnnotation
 
     @Bean
-    @ConditionalOnAnnotation({EnableDecryptRequestParam.class, TestAnnotataion.class})
+//    @ConditionalOnAnnotation({EnableDecryptRequestParam.class, TestAnnotataion.class})
     public DecryptRequestParamFilter decryptRequestParamFilter() {
         return new DecryptRequestParamFilter();
     }

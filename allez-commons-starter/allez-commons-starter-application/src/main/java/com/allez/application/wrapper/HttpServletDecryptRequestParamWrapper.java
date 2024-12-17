@@ -28,7 +28,7 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
 
     private final Collection<Part> parts;
 
-    private static final String SECRET_KEY = "XKrCHvcwbCOvfJxwE7cjcs5ALnz9i0ElE05RlRJnT84=";
+    private static final String SECRET_KEY = "709394";
 
     /**
      * Constructs a request object wrapping the given request.
@@ -97,6 +97,9 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
     }
 
     public Collection<Part> decryptParts(HttpServletRequest request) {
+        if (!HttpServletRequestParseUtil.isFormSubmitted(request)) {
+            return Collections.emptyList();
+        }
         List<Part> resultList = new ArrayList<>();
         try {
             Collection<Part> requestParts = request.getParts();
@@ -143,7 +146,12 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
         for (Map.Entry<String, String> entry : map.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            headerMap.put(XORUtil.decrypt(key, SECRET_KEY), XORUtil.decrypt(value, SECRET_KEY));
+            try {
+                headerMap.put(XORUtil.decrypt(key, SECRET_KEY), XORUtil.decrypt(value, SECRET_KEY));
+
+            }catch (Exception e){
+                System.out.println(e);
+            }
         }
         return headerMap;
     }

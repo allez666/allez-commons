@@ -36,9 +36,13 @@ public class HttpServletRequestParseUtil {
         return Objects.nonNull(filename);
     }
 
+    public static boolean isFormSubmitted(HttpServletRequest servletRequest) {
+        return StringUtils.startsWithIgnoreCase(servletRequest.getContentType(), ("multipart/"));
+    }
+
     public static Map<String, Object> parseFormData(HttpServletRequest servletRequest) {
         Map<String, Object> map = new HashMap<>();
-        if (!StringUtils.startsWithIgnoreCase(servletRequest.getContentType(), ("multipart/"))) {
+        if (!isFormSubmitted(servletRequest)) {
             return map;
         }
         try {

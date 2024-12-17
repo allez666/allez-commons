@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 /**
  * @author chenyu
@@ -35,7 +36,7 @@ public class XORUtil {
         if (StrUtil.isBlank(data) || StrUtil.isBlank(key)) {
             return data;
         }
-        byte[] decrypt = decrypt(data.getBytes(CHARSETS), key.getBytes(CHARSETS));
+        byte[] decrypt = decrypt( Base64.getDecoder().decode(data), key.getBytes(CHARSETS));
         return new String(decrypt, CHARSETS);
     }
 

@@ -21,4 +21,10 @@ public class TestController {
         return "Hello world!";
     }
 
+    @PostMapping("/test")
+    public String test(@RequestBody Map<String,Object> map,Map<String ,Object> paramMap){
+        System.out.println(1);
+        return "111";
+    }
+
 }

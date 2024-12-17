@@ -28,6 +28,9 @@ public class ContentCachingRequestFilter extends OncePerRequestFilter implements
 
         ContentCachingRequestWrapper contentCachingRequestWrapper = new ContentCachingRequestWrapper(request);
         ContentCachingResponseWrapper contentCachingResponseWrapper = new ContentCachingResponseWrapper(response);
+        contentCachingResponseWrapper.setHeader("Access-Control-Allow-Origin", "*");
+        contentCachingResponseWrapper.setHeader("Access-Control-Allow-Methods", "*");
+        contentCachingResponseWrapper.setHeader("Access-Control-Allow-Headers", "*");
         filterChain.doFilter(contentCachingRequestWrapper, contentCachingResponseWrapper);
         //将写入的数据缓存起来了，而没有同时写到OutputStream中。这导致返回结果一直为空。
         // 解决方法是，在最后一定要手动调用它的copyBodyToResponse方法，将缓存的数据写入输出流里。

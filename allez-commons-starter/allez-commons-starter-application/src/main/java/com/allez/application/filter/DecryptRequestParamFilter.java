@@ -3,6 +3,7 @@ package com.allez.application.filter;
 import com.allez.application.config.FilterOrderConfig;
 import com.allez.application.wrapper.HttpServletDecryptRequestParamWrapper;
 import org.springframework.boot.web.servlet.filter.OrderedFilter;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -24,6 +25,10 @@ public class DecryptRequestParamFilter extends OncePerRequestFilter implements O
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         HttpServletDecryptRequestParamWrapper httpServletDecryptRequestParamWrapper = new HttpServletDecryptRequestParamWrapper(request);
         filterChain.doFilter(httpServletDecryptRequestParamWrapper, response);
     }
