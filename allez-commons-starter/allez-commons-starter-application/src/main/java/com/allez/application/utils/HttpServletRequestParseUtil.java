@@ -30,21 +30,6 @@ public class HttpServletRequestParseUtil {
         return servletRequest.getContextPath() + servletRequest.getServletPath();
     }
 
-    public static String parseUrl() {
-        GlobalHttpServletRequestWrapper servletRequest = GlobalRequestContextHolder.getServletRequest();
-        return parseUrl(servletRequest);
-    }
-
-    public static Map<String, Object> parseFormData() {
-        GlobalHttpServletRequestWrapper servletRequest = GlobalRequestContextHolder.getServletRequest();
-        return parseFormData(servletRequest);
-    }
-
-    public static <T> T parseFormData(Class<T> clazz) {
-        GlobalHttpServletRequestWrapper servletRequest = GlobalRequestContextHolder.getServletRequest();
-        Map<String, Object> stringObjectMap = parseFormData(servletRequest);
-        return JSON.parseObject(JSON.toJSONString(stringObjectMap), clazz);
-    }
 
     public static boolean isMultipartFile(Part part) {
         String headerValue = part.getHeader(HttpHeaders.CONTENT_DISPOSITION);
@@ -89,10 +74,6 @@ public class HttpServletRequestParseUtil {
         return headerMap;
     }
 
-    public static Map<String, String> parseHeader() {
-        GlobalHttpServletRequestWrapper servletRequest = GlobalRequestContextHolder.getServletRequest();
-        return parseHeader(servletRequest);
-    }
 
     public static <T> T parseHeader(HttpServletRequest servletRequest, Class<T> clazz) {
         Map<String, String> stringStringMap = parseHeader(servletRequest);

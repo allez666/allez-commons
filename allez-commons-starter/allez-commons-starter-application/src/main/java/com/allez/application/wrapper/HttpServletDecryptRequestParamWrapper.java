@@ -92,7 +92,7 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
     }
 
     @Override
-    public Collection<Part> getParts() throws IOException, ServletException {
+    public Collection<Part> getParts() {
         return this.parts;
     }
 
@@ -121,7 +121,6 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
                 String key = entry.getKey();
                 String decryptKey = XORUtil.encrypt(key, SECRET_KEY);
                 String[] value = entry.getValue();
-
                 String[] array = Arrays.stream(value).map(e -> {
                             if (StrUtil.isBlank(e)) {
                                 return StrUtil.EMPTY;
@@ -144,7 +143,6 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
         for (Map.Entry<String, String> entry : map.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-
             headerMap.put(XORUtil.encrypt(key, SECRET_KEY), XORUtil.encrypt(value, SECRET_KEY));
         }
         return headerMap;
@@ -188,14 +186,8 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
 
         @Override
         public InputStream getInputStream() throws IOException {
-            byte[] bytes = this.applicationPart.getInputStream().readAllBytes();
-            byte[] a = new byte[bytes.length];
-            for (int i = 0; i < bytes.length; i++) {
-                int i1 = bytes[i] ^ 111;
-                a[i] = (byte) i1;
-            }
-
-            return new ByteArrayInputStream(a);
+            byte[] encrypt = XORUtil.encrypt(this.applicationPart.getInputStream(), SECRET_KEY);
+            return new ByteArrayInputStream(encrypt);
         }
 
         @Override

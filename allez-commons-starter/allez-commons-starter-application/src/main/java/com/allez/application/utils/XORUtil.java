@@ -5,7 +5,6 @@ import cn.hutool.core.util.StrUtil;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 
 /**
  * @author chenyu
@@ -14,9 +13,9 @@ import java.util.Objects;
  */
 public class XORUtil {
 
-    private static String SECRET_KEY = "XKrCHvcwbCOvfJxwE7cjcs5ALnz9i0ElE05RlRJnT84=";
+    private static final String SECRET_KEY = "XKrCHvcwbCOvfJxwE7cjcs5ALnz9i0ElE05RlRJnT84=";
 
-    private static Charset CHARSETS = StandardCharsets.UTF_8;
+    private static final Charset CHARSETS = StandardCharsets.UTF_8;
 
     public static void main(String[] args) {
         String aaa = "aaa";
@@ -63,6 +62,29 @@ public class XORUtil {
         return result;
     }
 
+    public static byte[] encrypt(InputStream in, String key) {
+        byte[] bytes = key.getBytes(CHARSETS);
+        return encrypt(in, bytes);
+    }
+
+
+    public static byte[] encrypt(InputStream in, byte[] key) {
+        try {
+            int b;
+            int i = 0;
+            byte[] resultBytes = new byte[in.available()];
+            while ((b = in.read()) != -1) {
+                resultBytes[i] = (byte) b;
+                // 循环变量递增
+                i++;
+            }
+            return encrypt(resultBytes, key);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(in);
+        }
+    }
 
     /**
      * 对文件异或算法加密/解密
@@ -100,18 +122,6 @@ public class XORUtil {
             close(in);
             close(out);
         }
-    }
-
-    public static byte[] encrypt(InputStream in, byte[] key) throws Exception {
-        byte[] resultBytes = new byte[in.available()];
-
-        try {
-
-
-        } finally {
-
-        }
-
     }
 
     private static void close(Closeable c) {
