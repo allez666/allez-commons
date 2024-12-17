@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * @author chenyu
  * @date 2024/7/24 下午3:24
- * @description MultipartFile
+ * @description MultipartFile只打印文件名
  */
 
 public class MultipartFileLogJsonSerializer implements JsonSerializer<MultipartFile> {

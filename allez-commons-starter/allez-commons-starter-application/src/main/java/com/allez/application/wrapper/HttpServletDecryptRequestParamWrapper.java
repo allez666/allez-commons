@@ -28,7 +28,7 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
 
     private final Collection<Part> parts;
 
-    private static String SECRET_KEY = "XKrCHvcwbCOvfJxwE7cjcs5ALnz9i0ElE05RlRJnT84=";
+    private static final String SECRET_KEY = "XKrCHvcwbCOvfJxwE7cjcs5ALnz9i0ElE05RlRJnT84=";
 
     /**
      * Constructs a request object wrapping the given request.
