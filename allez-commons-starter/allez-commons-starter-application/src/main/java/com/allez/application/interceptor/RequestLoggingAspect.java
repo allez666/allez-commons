@@ -2,7 +2,6 @@ package com.allez.application.interceptor;
 
 import cn.hutool.core.date.SystemClock;
 import cn.hutool.core.util.ArrayUtil;
-import com.allez.application.GlobalRequestContextHolder;
 import com.allez.application.entity.HttpRequestLog;
 import com.allez.application.serializer.gson.MultipartFileLogJsonSerializer;
 import com.google.gson.Gson;
@@ -13,7 +12,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -60,7 +58,7 @@ public class RequestLoggingAspect {
 
         HttpRequestLog requestLog = HttpRequestLog
                 .builder()
-                .url(GlobalRequestContextHolder.getRequestDetailInfo().getUrl())
+//                .url(GlobalRequestContextHolder.getRequestDetailInfo().getUrl())
                 .rt(SystemClock.now() - startTime)
                 .paramMap(paramMap)
                 .result(logResult)

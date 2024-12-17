@@ -3,8 +3,6 @@ package com.allez.application.utils;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.net.url.UrlQuery;
 import com.alibaba.fastjson2.JSON;
-import com.allez.application.GlobalRequestContextHolder;
-import com.allez.application.wrapper.GlobalHttpServletRequestWrapper;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;
