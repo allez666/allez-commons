@@ -119,13 +119,13 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
         for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
             try {
                 String key = entry.getKey();
-                String decryptKey = XORUtil.encrypt(key, SECRET_KEY);
+                String decryptKey = XORUtil.decrypt(key, SECRET_KEY);
                 String[] value = entry.getValue();
                 String[] array = Arrays.stream(value).map(e -> {
                             if (StrUtil.isBlank(e)) {
                                 return StrUtil.EMPTY;
                             } else {
-                                return XORUtil.encrypt(e, SECRET_KEY);
+                                return XORUtil.decrypt(e, SECRET_KEY);
                             }
                         })
                         .toArray(String[]::new);
@@ -143,7 +143,7 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
         for (Map.Entry<String, String> entry : map.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            headerMap.put(XORUtil.encrypt(key, SECRET_KEY), XORUtil.encrypt(value, SECRET_KEY));
+            headerMap.put(XORUtil.decrypt(key, SECRET_KEY), XORUtil.decrypt(value, SECRET_KEY));
         }
         return headerMap;
     }
@@ -186,13 +186,13 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
 
         @Override
         public InputStream getInputStream() throws IOException {
-            byte[] encrypt = XORUtil.encrypt(this.applicationPart.getInputStream(), SECRET_KEY);
-            return new ByteArrayInputStream(encrypt);
+            byte[] decrypt = XORUtil.decrypt(this.applicationPart.getInputStream(), SECRET_KEY);
+            return new ByteArrayInputStream(decrypt);
         }
 
         @Override
         public String getName() {
-            return XORUtil.encrypt(this.applicationPart.getName(), SECRET_KEY);
+            return XORUtil.decrypt(this.applicationPart.getName(), SECRET_KEY);
         }
 
         @Override

@@ -22,21 +22,21 @@ public class XORUtil {
         String bbb = "bbb";
         String ccc = "ccc";
 
-        byte[] encrypt = encrypt(aaa.getBytes(CHARSETS), SECRET_KEY.getBytes(CHARSETS));
+        byte[] decrypt = decrypt(aaa.getBytes(CHARSETS), SECRET_KEY.getBytes(CHARSETS));
 
-        System.out.println(new String(encrypt, CHARSETS));
+        System.out.println(new String(decrypt, CHARSETS));
 
-        byte[] encrypt1 = encrypt(encrypt, SECRET_KEY.getBytes(CHARSETS));
-        System.out.println(new String(encrypt1, CHARSETS));
+        byte[] decrypt1 = decrypt(decrypt, SECRET_KEY.getBytes(CHARSETS));
+        System.out.println(new String(decrypt1, CHARSETS));
 
     }
 
-    public static String encrypt(String data, String key) {
+    public static String decrypt(String data, String key) {
         if (StrUtil.isBlank(data) || StrUtil.isBlank(key)) {
             return data;
         }
-        byte[] encrypt = encrypt(data.getBytes(CHARSETS), key.getBytes(CHARSETS));
-        return new String(encrypt, CHARSETS);
+        byte[] decrypt = decrypt(data.getBytes(CHARSETS), key.getBytes(CHARSETS));
+        return new String(decrypt, CHARSETS);
     }
 
     /**
@@ -46,7 +46,7 @@ public class XORUtil {
      * @param key  密钥
      * @return 返回解密/加密后的数据
      */
-    public static byte[] encrypt(byte[] data, byte[] key) {
+    public static byte[] decrypt(byte[] data, byte[] key) {
         if (data == null || data.length == 0 || key == null || key.length == 0) {
             return data;
         }
@@ -62,13 +62,13 @@ public class XORUtil {
         return result;
     }
 
-    public static byte[] encrypt(InputStream in, String key) {
+    public static byte[] decrypt(InputStream in, String key) {
         byte[] bytes = key.getBytes(CHARSETS);
-        return encrypt(in, bytes);
+        return decrypt(in, bytes);
     }
 
 
-    public static byte[] encrypt(InputStream in, byte[] key) {
+    public static byte[] decrypt(InputStream in, byte[] key) {
         try {
             int b;
             int i = 0;
@@ -78,7 +78,7 @@ public class XORUtil {
                 // 循环变量递增
                 i++;
             }
-            return encrypt(resultBytes, key);
+            return decrypt(resultBytes, key);
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
@@ -93,7 +93,7 @@ public class XORUtil {
      * @param outFile 结果输出文件
      * @param key     密钥
      */
-    public static void encryptFile(File inFile, File outFile, byte[] key) throws Exception {
+    public static void decryptFile(File inFile, File outFile, byte[] key) throws Exception {
         InputStream in = null;
         OutputStream out = null;
 
