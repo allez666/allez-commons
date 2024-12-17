@@ -1,12 +1,16 @@
 package com.allez.application.wrapper;
 
 import cn.hutool.core.util.StrUtil;
+import com.allez.application.filter.RequestParamDecryptFilter;
 import com.allez.application.util.HttpServletRequestParseUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -58,7 +62,17 @@ public class HttpServletDecryptRequestParamWrapper extends GlobalHttpServletRequ
             Enumeration<String> attributeNames = request.getAttributeNames();
             Collection<Part> requestParts = request.getParts();
             for (Part requestPart : requestParts) {
-                System.out.println();
+                StringBuilder content = new StringBuilder();
+                try (BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(requestPart.getInputStream(), StandardCharsets.UTF_8))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        content.append(line).append(System.lineSeparator());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                System.out.println(content);
             }
 
         } catch (IOException | ServletException e) {
@@ -70,24 +84,23 @@ public class HttpServletDecryptRequestParamWrapper extends GlobalHttpServletRequ
 
     private Map<String, String[]> decryptParamMap(HttpServletRequest request) {
         Map<String, String> urlParamMap = HttpServletRequestParseUtils.parseUrlParam(request);
-
         Map<String, String[]> resultMap = new HashMap<>();
-//        for (Map.Entry<String, String> entry : urlParamMap.entrySet()) {
-//            try {
-//                String key = entry.getKey();
-//                String decryptKey = RequestParamDecryptFilter.decrypt(key);
-//                String value = entry.getValue();
-//                String decryptValue;
-//                if (StrUtil.isBlank(value)) {
-//                    decryptValue = StrUtil.EMPTY;
-//                } else {
-//                    decryptValue = RequestParamDecryptFilter.decrypt(value);
-//                }
-//                resultMap.put(decryptKey, new String[]{decryptValue});
-//            } catch (Exception e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
+        for (Map.Entry<String, String> entry : urlParamMap.entrySet()) {
+            try {
+                String key = entry.getKey();
+                String decryptKey = RequestParamDecryptFilter.decrypt(key);
+                String value = entry.getValue();
+                String decryptValue;
+                if (StrUtil.isBlank(value)) {
+                    decryptValue = StrUtil.EMPTY;
+                } else {
+                    decryptValue = RequestParamDecryptFilter.decrypt(value);
+                }
+                resultMap.put(decryptKey, new String[]{decryptValue});
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
         return resultMap;
     }
 

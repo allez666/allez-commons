@@ -1,13 +1,9 @@
 package com.allez.application.configuration;
 
-import com.allez.application.config.FilterOrderConfig;
 import com.allez.application.filter.ContentCachingRequestFilter;
-import com.google.gson.Gson;
+import com.allez.application.filter.DecryptRequestParamFilter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
-
-import javax.servlet.Filter;
 
 /**
  * @author chenyu
@@ -15,7 +11,6 @@ import javax.servlet.Filter;
  * @description
  */
 public class ApplicationAutoConfiguration {
-
 
 
     @Bean
@@ -27,6 +22,10 @@ public class ApplicationAutoConfiguration {
 
     // todo 可控加密 ,实现 @ConditionalOnAnnotation
 
+    @Bean
+    public DecryptRequestParamFilter decryptRequestParamFilter() {
+        return new DecryptRequestParamFilter();
+    }
 
 
 }
