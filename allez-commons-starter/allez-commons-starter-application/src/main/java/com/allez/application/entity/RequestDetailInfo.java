@@ -1,23 +1,12 @@
 package com.allez.application.entity;
 
-import cn.hutool.core.net.url.UrlQuery;
-import com.allez.application.util.HttpServletRequestParseUtils;
-import com.allez.application.wrapper.GlobalHttpServletRequestWrapper;
+import com.allez.application.utils.HttpServletRequestParseUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.http.ContentDisposition;
-import org.springframework.http.HttpHeaders;
-import org.springframework.util.StringUtils;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
-import java.io.IOException;
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author chenyu
@@ -40,9 +29,9 @@ public class RequestDetailInfo implements Serializable {
 
     public static RequestDetailInfo of(HttpServletRequest httpServletRequest) {
         RequestDetailInfo requestDetailInfo = new RequestDetailInfo();
-        RequestHeaderParam requestHeaderParam = HttpServletRequestParseUtils.parseHeader(httpServletRequest, RequestHeaderParam.class);
+        RequestHeaderParam requestHeaderParam = HttpServletRequestParseUtil.parseHeader(httpServletRequest, RequestHeaderParam.class);
         requestDetailInfo.setHeaderParam(requestHeaderParam);
-        requestDetailInfo.setUrl(HttpServletRequestParseUtils.parseUrl(httpServletRequest));
+        requestDetailInfo.setUrl(HttpServletRequestParseUtil.parseUrl(httpServletRequest));
         requestDetailInfo.setMethod(httpServletRequest.getMethod());
         requestDetailInfo.setContentType(httpServletRequest.getContentType());
         return requestDetailInfo;

@@ -1,4 +1,4 @@
-package com.allez.application.util;
+package com.allez.application.utils;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.net.url.UrlQuery;
@@ -24,7 +24,7 @@ import java.util.Objects;
  * @date 2024/8/20 17:44
  * @description 解析 HttpServletRequest 的工具类
  */
-public class HttpServletRequestParseUtils {
+public class HttpServletRequestParseUtil {
 
     public static String parseUrl(HttpServletRequest servletRequest) {
         return servletRequest.getContextPath() + servletRequest.getServletPath();

@@ -18,11 +18,10 @@ public class TestReq {
     private String aaa;
     private String bbb;
 
-    private String ccc;
 
     private String ddd;
 
-    private MultipartFile file;
+    private MultipartFile ccc;
 
     private MultipartFile fileTemp;
 

@@ -3,7 +3,7 @@ package com.allez.application.filter;
 import com.alibaba.fastjson.JSON;
 import com.allez.application.GlobalRequestContextHolder;
 import com.allez.application.entity.RequestDetailInfo;
-import com.allez.application.util.HttpServletRequestParseUtils;
+import com.allez.application.utils.HttpServletRequestParseUtil;
 import com.allez.application.wrapper.HttpServletDecryptRequestParamWrapper;
 import com.allez.lang.enums.BoooleanEnum;
 
@@ -36,7 +36,7 @@ public class RequestParamDecryptFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
         HttpServletDecryptRequestParamWrapper requestParamDecryptFilter = new HttpServletDecryptRequestParamWrapper(httpRequest);
-        Map<String, Object> stringObjectMap = HttpServletRequestParseUtils.parseFormData(requestParamDecryptFilter);
+        Map<String, Object> stringObjectMap = HttpServletRequestParseUtil.parseFormData(requestParamDecryptFilter);
         System.out.println(JSON.toJSONString(request.getParameterMap()));
         chain.doFilter(request, response);
     }
@@ -55,12 +55,17 @@ public class RequestParamDecryptFilter implements Filter {
     }
 
     // 解密
-    public static String decrypt(String encryptedData) throws Exception {
-        SecretKeySpec secretKey = new SecretKeySpec(Base64.getDecoder().decode(SECRET_KEY), ALGORITHM);
-        Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-        cipher.init(Cipher.DECRYPT_MODE, secretKey);
-        byte[] decryptedData = cipher.doFinal(Base64.getDecoder().decode(encryptedData));
-        return new String(decryptedData);
+    public static String decrypt(String encryptedData)  {
+        try {
+            SecretKeySpec secretKey = new SecretKeySpec(Base64.getDecoder().decode(SECRET_KEY), ALGORITHM);
+            Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+            cipher.init(Cipher.DECRYPT_MODE, secretKey);
+            byte[] decryptedData = cipher.doFinal(Base64.getDecoder().decode(encryptedData));
+            return new String(decryptedData);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+       return "";
     }
 
     public static void main(String[] args) throws Exception {
