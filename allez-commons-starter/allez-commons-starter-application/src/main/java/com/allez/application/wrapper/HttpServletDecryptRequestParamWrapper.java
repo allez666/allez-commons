@@ -1,14 +1,18 @@
 package com.allez.application.wrapper;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import com.allez.application.filter.RequestParamDecryptFilter;
+import com.allez.application.utils.HttpServletRequestParseUtil;
+import com.allez.application.utils.XORUtil;
 import lombok.SneakyThrows;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.Part;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -24,6 +28,8 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
 
     private final Collection<Part> parts;
 
+    private static String SECRET_KEY = "XKrCHvcwbCOvfJxwE7cjcs5ALnz9i0ElE05RlRJnT84=";
+
     /**
      * Constructs a request object wrapping the given request.
      *
@@ -32,24 +38,30 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
      */
     public HttpServletDecryptRequestParamWrapper(HttpServletRequest request) {
         super(request);
-        this.headerMap = new HashMap<>();
+        this.headerMap = decryptHeaders(request);
         this.paramMap = decryptParamMap(request);
         this.parts = decryptParts(request);
+    }
+
+
+    @Override
+    public String getHeader(String name) {
+        return this.headerMap.get(name);
+    }
+
+    @Override
+    public Enumeration<String> getHeaders(String name) {
+        return Collections.enumeration(CollUtil.toList(this.headerMap.get(name)));
+    }
+
+    @Override
+    public Enumeration<String> getHeaderNames() {
+        return Collections.enumeration(this.headerMap.keySet());
     }
 
     @Override
     public String[] getParameterValues(String name) {
         return this.paramMap.get(name);
-    }
-
-    @Override
-    public String getHeader(String name) {
-        return super.getHeader(name);
-    }
-
-    @Override
-    public Enumeration<String> getHeaders(String name) {
-        return super.getHeaders(name);
     }
 
 
@@ -107,14 +119,14 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
         for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
             try {
                 String key = entry.getKey();
-                String decryptKey = RequestParamDecryptFilter.decrypt(key);
+                String decryptKey = XORUtil.encrypt(key, SECRET_KEY);
                 String[] value = entry.getValue();
 
                 String[] array = Arrays.stream(value).map(e -> {
                             if (StrUtil.isBlank(e)) {
                                 return StrUtil.EMPTY;
                             } else {
-                                return RequestParamDecryptFilter.decrypt(e);
+                                return XORUtil.encrypt(e, SECRET_KEY);
                             }
                         })
                         .toArray(String[]::new);
@@ -124,6 +136,18 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
             }
         }
         return resultMap;
+    }
+
+    private Map<String, String> decryptHeaders(HttpServletRequest request) {
+        Map<String, String> headerMap = new HashMap<>();
+        Map<String, String> map = HttpServletRequestParseUtil.parseHeader(request);
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+
+            headerMap.put(XORUtil.encrypt(key, SECRET_KEY), XORUtil.encrypt(value, SECRET_KEY));
+        }
+        return headerMap;
     }
 
 
@@ -176,11 +200,7 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
 
         @Override
         public String getName() {
-            try {
-                return RequestParamDecryptFilter.decrypt(this.applicationPart.getName());
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            return XORUtil.encrypt(this.applicationPart.getName(), SECRET_KEY);
         }
 
         @Override
