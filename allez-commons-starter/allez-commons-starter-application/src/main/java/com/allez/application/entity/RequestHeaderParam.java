@@ -23,6 +23,8 @@ public class RequestHeaderParam implements Serializable {
 
     private String version;
 
+    private Integer clientType;
+
     private String ip;
 
     private String token;

@@ -22,7 +22,7 @@ public class TestController {
     }
 
     @PostMapping("/test")
-    public String test(@RequestBody Map<String,Object> map,Map<String ,Object> paramMap){
+    public String test(TestReq testReq){
         System.out.println(1);
         return "111";
     }

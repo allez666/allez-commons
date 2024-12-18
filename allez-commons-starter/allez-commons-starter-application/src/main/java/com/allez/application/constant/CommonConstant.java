@@ -12,4 +12,8 @@ public interface CommonConstant {
     String NO_DECRYPTION_HEADER_VALUE = "ccc";
 
 
+    /**
+     * 版本号分隔符
+     */
+    String VERSION_SEPARATOR = ".";
 }

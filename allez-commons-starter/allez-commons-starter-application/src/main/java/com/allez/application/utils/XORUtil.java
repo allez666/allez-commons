@@ -22,7 +22,7 @@ public class XORUtil {
         if (StrUtil.isBlank(data) || StrUtil.isBlank(key)) {
             return data;
         }
-        byte[] decrypt = encrypt(Base64.getDecoder().decode(data), key.getBytes());
+        byte[] decrypt = encrypt(Base64.getDecoder().decode(data), key.getBytes(CHARSETS));
         return new String(decrypt);
     }
 

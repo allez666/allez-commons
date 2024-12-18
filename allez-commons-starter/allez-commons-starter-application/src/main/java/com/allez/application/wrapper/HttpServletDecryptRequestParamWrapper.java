@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.allez.application.utils.HttpServletRequestParseUtil;
 import com.allez.application.utils.XORUtil;
-import lombok.SneakyThrows;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +12,8 @@ import javax.servlet.http.Part;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -82,7 +83,7 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
     }
 
     @Override
-    public Part getPart(String name) throws IOException, ServletException {
+    public Part getPart(String name) throws ServletException {
         for (Part part : getParts()) {
             if (name.equals(part.getName())) {
                 return part;
@@ -127,7 +128,7 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
                             if (StrUtil.isBlank(e)) {
                                 return StrUtil.EMPTY;
                             } else {
-                                return XORUtil.decrypt(e, SECRET_KEY);
+                                return XORUtil.decrypt(URLDecoder.decode(e, StandardCharsets.UTF_8), SECRET_KEY);
                             }
                         })
                         .toArray(String[]::new);

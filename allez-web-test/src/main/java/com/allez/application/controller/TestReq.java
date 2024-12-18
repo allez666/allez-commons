@@ -25,4 +25,9 @@ public class TestReq {
 
     private MultipartFile fileTemp;
 
+    private String a;
+
+    private String b;
+    private String c;
+
 }

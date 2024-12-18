@@ -18,6 +18,7 @@ import java.io.IOException;
  * @description
  */
 public class ContentCachingRequestFilter extends OncePerRequestFilter implements OrderedFilter {
+
     @Override
     public int getOrder() {
         return FilterOrderConfig.CACHE_CONTENT_FILTER_ORDER;

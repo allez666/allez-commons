@@ -20,6 +20,7 @@ public class ApplicationAutoConfiguration {
     public ContentCachingRequestFilter contentCachingRequestFilter() {
         return new ContentCachingRequestFilter();
     }
+
     // todo http traceId filter
 
     @Bean
