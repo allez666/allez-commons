@@ -2,10 +2,14 @@ package com.allez.application.wrapper;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.allez.application.constant.CommonConstant;
 import com.allez.application.utils.HttpServletRequestParseUtil;
 import com.allez.application.utils.XORUtil;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.Part;
@@ -78,12 +82,39 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
     }
 
     @Override
+    public ServletInputStream getInputStream() throws IOException {
+        ServletInputStream inputStream = super.getInputStream();
+        byte[] bytes = inputStream.readAllBytes();
+        if (bytes.length == 0) {
+            return inputStream;
+        }
+        // 读出 原有的json对象
+        String originalJson = new String(bytes, CommonConstant.DEFAULT_CHARSETS);
+        String decryptOriginalJson = XORUtil.decrypt(originalJson, SECRET_KEY);
+        JSONObject originalJsonObject = JSON.parseObject(decryptOriginalJson);
+
+        // 对原有的json对象里面的每个 k/v都解密
+        JSONObject resultObject = new JSONObject(originalJsonObject.size());
+
+        for (String key : originalJsonObject.keySet()) {
+            String value = originalJsonObject.getString(key);
+
+            String decryptKey = XORUtil.decrypt(key, SECRET_KEY);
+            String decryptValue = XORUtil.decrypt(value, SECRET_KEY);
+            resultObject.put(decryptKey, decryptValue);
+        }
+        // 解密后再转成json串塞回去
+        return new BodyInputStreamWrapper(resultObject.toJSONString().getBytes(CommonConstant.DEFAULT_CHARSETS));
+
+    }
+
+    @Override
     public Enumeration<String> getParameterNames() {
         return Collections.enumeration(this.paramMap.keySet());
     }
 
     @Override
-    public Part getPart(String name) throws ServletException {
+    public Part getPart(String name) {
         for (Part part : getParts()) {
             if (name.equals(part.getName())) {
                 return part;
@@ -218,6 +249,24 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
         public String getSubmittedFileName() {
             return this.applicationPart.getSubmittedFileName();
         }
+    }
+
+    public static void main(String[] args) {
+        String aaa = XORUtil.encryptAndBase64("a", SECRET_KEY);
+        String aaaValue = XORUtil.encryptAndBase64("555", SECRET_KEY);
+        String bbb = XORUtil.encryptAndBase64("b", SECRET_KEY);
+        String bbbValue = XORUtil.encryptAndBase64("777", SECRET_KEY);
+
+        System.out.println(aaa);
+        System.out.println(aaaValue);
+        System.out.println(bbb);
+        System.out.println(bbbValue);
+
+//        JSONObject jsonObject = new JSONObject();
+//        jsonObject.put(aaa, aaaValue);
+//        jsonObject.put(bbb, bbbValue);
+//
+//        System.out.println(XORUtil.encryptAndBase64(jsonObject.toJSONString(),SECRET_KEY));
     }
 
 }
