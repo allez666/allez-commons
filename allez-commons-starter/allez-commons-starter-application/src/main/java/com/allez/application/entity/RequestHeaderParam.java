@@ -46,4 +46,8 @@ public class RequestHeaderParam implements Serializable {
         }
         return jsonObject.toJavaObject(RequestHeaderParam.class);
     }
+
+    public ClientInfo buildClientInfo() {
+        return ClientInfo.of(this.version, this.clientType);
+    }
 }

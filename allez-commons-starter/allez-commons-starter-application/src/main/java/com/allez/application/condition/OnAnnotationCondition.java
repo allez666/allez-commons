@@ -3,6 +3,7 @@ package com.allez.application.condition;
 import cn.hutool.core.collection.CollUtil;
 import com.allez.application.annotation.ConditionalOnAnnotation;
 import com.allez.application.annotation.ConditionalOnMissingAnnotation;
+import com.allez.lang.util.AssertUtils;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionMessage;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
@@ -41,6 +42,7 @@ public class OnAnnotationCondition extends SpringBootCondition {
         return ConditionOutcome.match();
     }
 
+    @SuppressWarnings("unchecked")
     public ConditionOutcome onAnnotationMatch(ConditionContext context, AnnotatedTypeMetadata metadata) {
         MultiValueMap<String, Object> allAnnotationAttributes = metadata.getAllAnnotationAttributes(ConditionalOnAnnotation.class.getName());
         if (CollUtil.isEmpty(allAnnotationAttributes)) {
@@ -50,6 +52,8 @@ public class OnAnnotationCondition extends SpringBootCondition {
         Class<? extends Annotation>[] annotations = (Class<? extends Annotation>[]) CollUtil.getFirst(objects);
 
         ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();
+        AssertUtils.notNull(beanFactory,"beanFactory is null");
+
         for (Class<? extends Annotation> aClass : annotations) {
             String[] beanNamesForAnnotation = beanFactory.getBeanNamesForAnnotation(aClass);
             if (beanNamesForAnnotation.length == 0) {
@@ -59,7 +63,7 @@ public class OnAnnotationCondition extends SpringBootCondition {
         return ConditionOutcome.match();
     }
 
-
+    @SuppressWarnings("unchecked")
     public ConditionOutcome onMissingAnnotationMatch(ConditionContext context, AnnotatedTypeMetadata metadata) {
         MultiValueMap<String, Object> allAnnotationAttributes = metadata.getAllAnnotationAttributes(ConditionalOnMissingAnnotation.class.getName());
         if (CollUtil.isEmpty(allAnnotationAttributes)) {
@@ -69,6 +73,7 @@ public class OnAnnotationCondition extends SpringBootCondition {
         Class<? extends Annotation>[] annotations = (Class<? extends Annotation>[]) CollUtil.getFirst(objects);
 
         ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();
+        AssertUtils.notNull(beanFactory,"beanFactory is null");
         for (Class<? extends Annotation> aClass : annotations) {
             String[] beanNamesForAnnotation = beanFactory.getBeanNamesForAnnotation(aClass);
             if (beanNamesForAnnotation.length != 0) {
