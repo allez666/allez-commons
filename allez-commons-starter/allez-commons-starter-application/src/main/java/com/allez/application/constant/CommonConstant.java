@@ -1,0 +1,15 @@
+package com.allez.application.constant;
+
+/**
+ * @author chenyu
+ * @date 2024/12/18 13:53
+ * @description
+ */
+public interface CommonConstant {
+
+    String NO_DECRYPTION_HEADER_KEY = "aaa";
+
+    String NO_DECRYPTION_HEADER_VALUE = "ccc";
+
+
+}

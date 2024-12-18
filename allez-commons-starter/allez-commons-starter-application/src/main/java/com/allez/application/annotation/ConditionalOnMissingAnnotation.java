@@ -6,16 +6,15 @@ import org.springframework.context.annotation.Conditional;
 import java.lang.annotation.*;
 
 /**
- * @author: chenGuanXi
- * @create: 2024-12-17 21:58
- * @Description:
+ * @author chenyu
+ * @date 2024/12/18 14:00
+ * @description
  */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Conditional({OnAnnotationCondition.class})
-public @interface ConditionalOnAnnotation {
-
+public @interface ConditionalOnMissingAnnotation {
     String VALUE_FIELD_NAME = "value";
 
     Class<? extends Annotation>[] value();

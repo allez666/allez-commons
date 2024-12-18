@@ -14,30 +14,16 @@ import java.util.Base64;
  */
 public class XORUtil {
 
-    private static final String SECRET_KEY = "XKrCHvcwbCOvfJxwE7cjcs5ALnz9i0ElE05RlRJnT84=";
 
     private static final Charset CHARSETS = StandardCharsets.UTF_8;
 
-    public static void main(String[] args) {
-        String aaa = "aaa";
-        String bbb = "bbb";
-        String ccc = "ccc";
-
-        byte[] decrypt = decrypt(aaa.getBytes(CHARSETS), SECRET_KEY.getBytes(CHARSETS));
-
-        System.out.println(new String(decrypt, CHARSETS));
-
-        byte[] decrypt1 = decrypt(decrypt, SECRET_KEY.getBytes(CHARSETS));
-        System.out.println(new String(decrypt1, CHARSETS));
-
-    }
 
     public static String decrypt(String data, String key) {
         if (StrUtil.isBlank(data) || StrUtil.isBlank(key)) {
             return data;
         }
-        byte[] decrypt = decrypt( Base64.getDecoder().decode(data), key.getBytes(CHARSETS));
-        return new String(decrypt, CHARSETS);
+        byte[] decrypt = encrypt(Base64.getDecoder().decode(data), key.getBytes());
+        return new String(decrypt);
     }
 
     /**
@@ -47,7 +33,7 @@ public class XORUtil {
      * @param key  密钥
      * @return 返回解密/加密后的数据
      */
-    public static byte[] decrypt(byte[] data, byte[] key) {
+    public static byte[] encrypt(byte[] data, byte[] key) {
         if (data == null || data.length == 0 || key == null || key.length == 0) {
             return data;
         }
@@ -79,7 +65,7 @@ public class XORUtil {
                 // 循环变量递增
                 i++;
             }
-            return decrypt(resultBytes, key);
+            return encrypt(resultBytes, key);
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {

@@ -114,7 +114,6 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
     }
 
 
-    @SneakyThrows
     private Map<String, String[]> decryptParamMap(HttpServletRequest request) {
         Map<String, String[]> resultMap = new HashMap<>();
 
@@ -147,10 +146,11 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
             String key = entry.getKey();
             String value = entry.getValue();
             try {
-                headerMap.put(XORUtil.decrypt(key, SECRET_KEY), XORUtil.decrypt(value, SECRET_KEY));
-
-            }catch (Exception e){
-                System.out.println(e);
+                String keyDecrypt = XORUtil.decrypt(key, SECRET_KEY);
+                String valueDecrypt = XORUtil.decrypt(value, SECRET_KEY);
+                headerMap.put(keyDecrypt, valueDecrypt);
+            } catch (Exception e) {
+                headerMap.put(key, value);
             }
         }
         return headerMap;

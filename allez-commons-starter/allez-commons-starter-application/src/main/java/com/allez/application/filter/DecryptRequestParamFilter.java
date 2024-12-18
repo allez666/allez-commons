@@ -1,6 +1,7 @@
 package com.allez.application.filter;
 
 import com.allez.application.config.FilterOrderConfig;
+import com.allez.application.constant.CommonConstant;
 import com.allez.application.wrapper.HttpServletDecryptRequestParamWrapper;
 import org.springframework.boot.web.servlet.filter.OrderedFilter;
 import org.springframework.http.HttpMethod;
@@ -11,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * @author: chenyu
@@ -18,6 +20,9 @@ import java.io.IOException;
  * @Description:
  */
 public class DecryptRequestParamFilter extends OncePerRequestFilter implements OrderedFilter {
+
+
+
     @Override
     public int getOrder() {
         return FilterOrderConfig.REQUEST_PARAM_ENCRYPT_FILTER_ORDER;
@@ -25,7 +30,9 @@ public class DecryptRequestParamFilter extends OncePerRequestFilter implements O
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
+        String header = request.getHeader(CommonConstant.NO_DECRYPTION_HEADER_KEY);
+        boolean noDecrypt = Objects.equals(header, CommonConstant.NO_DECRYPTION_HEADER_VALUE);
+        if (request.getMethod().equals(HttpMethod.OPTIONS.name()) || noDecrypt) {
             filterChain.doFilter(request, response);
             return;
         }
