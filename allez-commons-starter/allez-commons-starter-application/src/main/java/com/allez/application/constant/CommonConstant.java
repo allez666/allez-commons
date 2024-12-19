@@ -1,5 +1,8 @@
 package com.allez.application.constant;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
 /**
  * @author chenyu
  * @date 2024/12/18 13:53
@@ -16,4 +19,6 @@ public interface CommonConstant {
      * 版本号分隔符
      */
     String VERSION_SEPARATOR = ".";
+
+    Charset DEFAULT_CHARSETS = StandardCharsets.UTF_8;
 }

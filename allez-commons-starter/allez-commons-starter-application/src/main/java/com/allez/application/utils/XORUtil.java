@@ -1,10 +1,9 @@
 package com.allez.application.utils;
 
 import cn.hutool.core.util.StrUtil;
+import com.allez.application.constant.CommonConstant;
 
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 /**
@@ -15,15 +14,17 @@ import java.util.Base64;
 public class XORUtil {
 
 
-    private static final Charset CHARSETS = StandardCharsets.UTF_8;
-
-
     public static String decrypt(String data, String key) {
         if (StrUtil.isBlank(data) || StrUtil.isBlank(key)) {
             return data;
         }
-        byte[] decrypt = encrypt(Base64.getDecoder().decode(data), key.getBytes(CHARSETS));
+        byte[] decrypt = encrypt(Base64.getDecoder().decode(data), key.getBytes(CommonConstant.DEFAULT_CHARSETS));
         return new String(decrypt);
+    }
+
+    public static String encryptAndBase64(String data, String key) {
+        byte[] encrypt = encrypt(data.getBytes(CommonConstant.DEFAULT_CHARSETS), key.getBytes(CommonConstant.DEFAULT_CHARSETS));
+        return Base64.getEncoder().encodeToString(encrypt);
     }
 
     /**
@@ -50,7 +51,7 @@ public class XORUtil {
     }
 
     public static byte[] decrypt(InputStream in, String key) {
-        byte[] bytes = key.getBytes(CHARSETS);
+        byte[] bytes = key.getBytes(CommonConstant.DEFAULT_CHARSETS);
         return decrypt(in, bytes);
     }
 

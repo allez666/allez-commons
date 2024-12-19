@@ -1,6 +1,7 @@
 package com.allez.application.filter;
 
 import com.allez.application.config.FilterOrderConfig;
+import com.allez.application.wrapper.BodyInputStreamWrapper;
 import org.springframework.boot.web.servlet.filter.OrderedFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
@@ -8,6 +9,7 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -27,7 +29,7 @@ public class ContentCachingRequestFilter extends OncePerRequestFilter implements
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        ContentCachingRequestWrapper contentCachingRequestWrapper = new ContentCachingRequestWrapper(request);
+        ContentCachingRequestWrapper contentCachingRequestWrapper = buildContentCachingRequestWrapper(request);
         ContentCachingResponseWrapper contentCachingResponseWrapper = new ContentCachingResponseWrapper(response);
         contentCachingResponseWrapper.setHeader("Access-Control-Allow-Origin", "*");
         contentCachingResponseWrapper.setHeader("Access-Control-Allow-Methods", "*");
@@ -38,4 +40,25 @@ public class ContentCachingRequestFilter extends OncePerRequestFilter implements
         //调用完copyBodyToResponse后，缓存又被清空了，因此getContentAsByteArray一定要在之前调用，才能获取到缓存的返回体。
         contentCachingResponseWrapper.copyBodyToResponse();
     }
+
+    /**
+     * 原生的 ContentCachingRequestWrapper 里面缓存了读取的字节流
+     * 但是在流读完之后，并没有 从缓存的流中拿，还是会造成二次读取报错
+     * 这里重写一下 获取流的方法，读完后 从缓存拿
+     */
+    private ContentCachingRequestWrapper buildContentCachingRequestWrapper(HttpServletRequest request) {
+        return new ContentCachingRequestWrapper(request) {
+            @Override
+            public ServletInputStream getInputStream() throws IOException {
+                ServletInputStream inputStream = super.getInputStream();
+                if (inputStream.isFinished()) {
+                    return new BodyInputStreamWrapper(this.getContentAsByteArray());
+                } else {
+                    return inputStream;
+                }
+            }
+        };
+    }
+
+
 }
