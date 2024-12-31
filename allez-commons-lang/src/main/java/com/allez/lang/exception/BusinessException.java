@@ -19,14 +19,10 @@ public class BusinessException extends RuntimeException {
         this.code = code;
     }
 
-    public BusinessException(Integer code) {
-        super(ResultCode.FAIL.getMsg());
-        this.code = code;
-    }
 
     public BusinessException(String msg) {
         super(msg);
-        this.code = ResultCode.FAIL.getCode();
+        this.code = ResultCode.REMIND.getCode();
     }
 
     public BusinessException(ResultCode code) {

@@ -48,6 +48,10 @@ public class Result<T> implements Serializable {
         return new Result<>(code, msg, data);
     }
 
+    public static <T> Result<T> of(Integer code, String msg) {
+        return of(code, msg, null);
+    }
+
     public static <T> Result<T> success(T data) {
         return of(ResultCode.SUCCESS, data);
     }

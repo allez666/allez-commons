@@ -1,5 +1,6 @@
 package com.allez.application.entity;
 
+import com.allez.application.enums.ClientTypeEnum;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,10 +22,15 @@ public class ClientInfo {
 
     private String version;
 
+    /**
+     * {@link ClientTypeEnum}
+     */
     private Integer clientType;
 
-    public static ClientInfo of(String version, Integer clientType) {
-        return new ClientInfo(version, clientType);
+    private String ip;
+
+    public static ClientInfo of(String version, Integer clientType, String ip) {
+        return new ClientInfo(version, clientType, ip);
     }
 
 
@@ -39,22 +45,9 @@ public class ClientInfo {
      * 版本大于 版本限制
      */
     public boolean versionGreaterThan(String versionLimit) {
-        int[] appVersionNumber = convertToNumber(this.version);
-        int[] lowestVersionNumber = convertToNumber(versionLimit);
-
-        // 版本格式不一致 放行
-        if (appVersionNumber.length != lowestVersionNumber.length) {
-            return true;
-        }
-
-        for (int i = 0; i < appVersionNumber.length; i++) {
-            if (appVersionNumber[i] > lowestVersionNumber[i]) {
-                return true;
-            } else if (appVersionNumber[i] < lowestVersionNumber[i]) {
-                return false;
-            }
-        }
-        return false;
+        Integer appVersionNumber = versionConvertToNumber(this.version);
+        Integer lowestVersionNumber = versionConvertToNumber(versionLimit);
+        return appVersionNumber > lowestVersionNumber;
     }
 
     /**
@@ -78,15 +71,9 @@ public class ClientInfo {
         return !versionGreaterThanOrEquals(versionLimit);
     }
 
-    private int[] convertToNumber(String version) {
-        String[] split = version.split("\\.");
-        int[] result = new int[split.length];
-
-        for (int i = 0; i < split.length; i++) {
-            String s = split[i];
-            result[i] = Integer.parseInt(s);
-        }
-        return result;
+    private Integer versionConvertToNumber(String version) {
+        String replace = version.replaceAll("\\.", "");
+        return Integer.parseInt(replace);
     }
 
 

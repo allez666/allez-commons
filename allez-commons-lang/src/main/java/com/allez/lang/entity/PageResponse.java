@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PageResponse<T> implements Serializable {
+public class PageResponse<T> implements Serializable, BasePage {
 
     private int pageNumber;
 

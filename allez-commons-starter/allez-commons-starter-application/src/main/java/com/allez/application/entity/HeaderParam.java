@@ -19,13 +19,10 @@ import java.util.Enumeration;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldNameConstants
-public class RequestHeaderParam implements Serializable {
+public class HeaderParam implements Serializable {
 
-    private String version;
 
-    private Integer clientType;
-
-    private String ip;
+    private ClientInfo clientInfo;
 
     private String token;
 
@@ -36,7 +33,7 @@ public class RequestHeaderParam implements Serializable {
     private Boolean decryptRequestUrl = true;
 
 
-    public static RequestHeaderParam of(HttpServletRequest servletRequest) {
+    public static HeaderParam of(HttpServletRequest servletRequest) {
         JSONObject jsonObject = new JSONObject();
 
         Enumeration<String> headerNames = servletRequest.getHeaderNames();
@@ -44,10 +41,6 @@ public class RequestHeaderParam implements Serializable {
             String headerName = headerNames.nextElement();
             jsonObject.put(headerName, servletRequest.getHeader(headerName));
         }
-        return jsonObject.toJavaObject(RequestHeaderParam.class);
-    }
-
-    public ClientInfo buildClientInfo() {
-        return ClientInfo.of(this.version, this.clientType);
+        return jsonObject.toJavaObject(HeaderParam.class);
     }
 }

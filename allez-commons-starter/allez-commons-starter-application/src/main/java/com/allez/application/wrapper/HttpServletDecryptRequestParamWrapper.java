@@ -267,6 +267,12 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
 //        jsonObject.put(bbb, bbbValue);
 //
 //        System.out.println(XORUtil.encryptAndBase64(jsonObject.toJSONString(),SECRET_KEY));
+
+        String test ="[{'name':cwj,;!.测试一下}]";
+        byte[] encrypt = XORUtil.encrypt(test.getBytes(), SECRET_KEY.getBytes());
+        String x = new String(encrypt);
+        byte[] encode = Base64.getEncoder().encode(x.getBytes());
+        System.out.println(new String(encode));
     }
 
 }

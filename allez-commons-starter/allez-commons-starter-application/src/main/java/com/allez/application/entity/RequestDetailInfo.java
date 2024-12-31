@@ -18,7 +18,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class RequestDetailInfo implements Serializable {
 
-    private RequestHeaderParam headerParam;
+    private HeaderParam headerParam;
 
     private String url;
 
@@ -29,8 +29,8 @@ public class RequestDetailInfo implements Serializable {
 
     public static RequestDetailInfo of(HttpServletRequest httpServletRequest) {
         RequestDetailInfo requestDetailInfo = new RequestDetailInfo();
-        RequestHeaderParam requestHeaderParam = HttpServletRequestParseUtil.parseHeader(httpServletRequest, RequestHeaderParam.class);
-        requestDetailInfo.setHeaderParam(requestHeaderParam);
+        HeaderParam headerParam = HttpServletRequestParseUtil.parseHeader(httpServletRequest, HeaderParam.class);
+        requestDetailInfo.setHeaderParam(headerParam);
         requestDetailInfo.setUrl(HttpServletRequestParseUtil.parseUrl(httpServletRequest));
         requestDetailInfo.setMethod(httpServletRequest.getMethod());
         requestDetailInfo.setContentType(httpServletRequest.getContentType());

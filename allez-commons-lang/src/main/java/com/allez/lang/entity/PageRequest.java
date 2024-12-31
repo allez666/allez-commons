@@ -16,7 +16,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class PageRequest implements Serializable {
+public class PageRequest implements Serializable, BasePage, BaseSort {
 
     @NotNull
     @Min(1)
