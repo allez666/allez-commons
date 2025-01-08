@@ -108,6 +108,7 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
 
     }
 
+
     @Override
     public Enumeration<String> getParameterNames() {
         return Collections.enumeration(this.paramMap.keySet());
@@ -252,27 +253,48 @@ public class HttpServletDecryptRequestParamWrapper extends HttpServletRequestWra
     }
 
     public static void main(String[] args) {
-        String aaa = XORUtil.encryptAndBase64("a", SECRET_KEY);
-        String aaaValue = XORUtil.encryptAndBase64("555", SECRET_KEY);
-        String bbb = XORUtil.encryptAndBase64("b", SECRET_KEY);
-        String bbbValue = XORUtil.encryptAndBase64("777", SECRET_KEY);
-
-        System.out.println(aaa);
-        System.out.println(aaaValue);
-        System.out.println(bbb);
-        System.out.println(bbbValue);
-
-//        JSONObject jsonObject = new JSONObject();
-//        jsonObject.put(aaa, aaaValue);
-//        jsonObject.put(bbb, bbbValue);
+//        String aaa = XORUtil.encryptAndBase64("宇爷真帅", SECRET_KEY);
+//        String aaaValue = XORUtil.encryptAndBase64("555", SECRET_KEY);
+//        String bbb = XORUtil.encryptAndBase64("b", SECRET_KEY);
+//        String bbbValue = XORUtil.encryptAndBase64("777", SECRET_KEY);
 //
-//        System.out.println(XORUtil.encryptAndBase64(jsonObject.toJSONString(),SECRET_KEY));
+//        System.out.println(aaa);
+//        System.out.println(aaaValue);
+//        System.out.println(bbb);
+//        System.out.println(bbbValue);
+//
+////        JSONObject jsonObject = new JSONObject();
+////        jsonObject.put(aaa, aaaValue);
+////        jsonObject.put(bbb, bbbValue);
+////
+////        System.out.println(XORUtil.encryptAndBase64(jsonObject.toJSONString(),SECRET_KEY));
+//
+//        String test ="[{'name':cwj,;!.测试一下}]";
+//        byte[] encrypt = XORUtil.encrypt(test.getBytes(), SECRET_KEY.getBytes());
+//        String x = new String(encrypt);
+//        byte[] encode = Base64.getEncoder().encode(x.getBytes());
+//        System.out.println(new String(encode));
 
-        String test ="[{'name':cwj,;!.测试一下}]";
-        byte[] encrypt = XORUtil.encrypt(test.getBytes(), SECRET_KEY.getBytes());
-        String x = new String(encrypt);
-        byte[] encode = Base64.getEncoder().encode(x.getBytes());
-        System.out.println(new String(encode));
+        String json = "{\n" +
+                "          a: 'aaa',\n" +
+                "          b: 'bbb',\n" +
+                "          c: 'ddd'\n" +
+                "        }";
+
+        JSONObject originalJsonObject = JSON.parseObject(json);
+        // 对原有的json对象里面的每个 k/v都解密
+        JSONObject resultObject = new JSONObject(originalJsonObject.size());
+
+        for (String key : originalJsonObject.keySet()) {
+            String value = originalJsonObject.getString(key);
+
+            String decryptKey = XORUtil.encryptAndBase64(key, SECRET_KEY);
+            String decryptValue = XORUtil.encryptAndBase64(value, SECRET_KEY);
+            resultObject.put(decryptKey, decryptValue);
+        }
+
+        String s = XORUtil.encryptAndBase64(resultObject.toJSONString(), SECRET_KEY);
+        System.out.println(1);
     }
 
 }

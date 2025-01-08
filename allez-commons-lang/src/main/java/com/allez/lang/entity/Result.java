@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.function.Function;
 
 /**
  * @author: chenyu
@@ -76,5 +77,7 @@ public class Result<T> implements Serializable {
         return of(ResultCode.REMIND.getCode(), msg, null);
     }
 
-
+    public <V> Result<V> mapTo(Function<? super T, ? extends V> mapper) {
+        return Result.of(this.code, this.msg, mapper.apply(this.data));
+    }
 }

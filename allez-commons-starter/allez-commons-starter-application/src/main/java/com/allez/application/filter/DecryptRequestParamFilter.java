@@ -2,16 +2,23 @@ package com.allez.application.filter;
 
 import com.allez.application.config.FilterOrderConfig;
 import com.allez.application.constant.CommonConstant;
+import com.allez.application.utils.XORUtil;
 import com.allez.application.wrapper.HttpServletDecryptRequestParamWrapper;
+import com.allez.application.wrapper.HttpServletDecryptResponseParamWrapper;
 import org.springframework.boot.web.servlet.filter.OrderedFilter;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
@@ -20,7 +27,6 @@ import java.util.Objects;
  * @Description:
  */
 public class DecryptRequestParamFilter extends OncePerRequestFilter implements OrderedFilter {
-
 
 
     @Override
@@ -37,6 +43,31 @@ public class DecryptRequestParamFilter extends OncePerRequestFilter implements O
             return;
         }
         HttpServletDecryptRequestParamWrapper httpServletDecryptRequestParamWrapper = new HttpServletDecryptRequestParamWrapper(request);
+        ContentCachingResponseWrapper contentCachingResponseWrapper = new ContentCachingResponseWrapper(response) {
+            @Override
+            protected void copyBodyToResponse(boolean complete) throws IOException {
+                InputStream contentInputStream = getContentInputStream();
+                if (getContentSize() > 0) {
+                    HttpServletResponse rawResponse = (HttpServletResponse) getResponse();
+//                    if ((complete || this.contentLength != null) && !rawResponse.isCommitted()) {
+//                        if (rawResponse.getHeader(HttpHeaders.TRANSFER_ENCODING) == null) {
+//                            rawResponse.setContentLength(complete ? getContentSize() : this.contentLength);
+//                        }
+//                        this.contentLength = null;
+//                    }
+//                    this.content.writeTo(rawResponse.getOutputStream());
+//                    this.content.reset();
+                    byte[] bytes = contentInputStream.readAllBytes();
+                    String s = new String(bytes, CommonConstant.DEFAULT_CHARSETS);
+                    String s1 = XORUtil.encryptAndBase64(s, "709394");
+                    rawResponse.getOutputStream().write(s1.getBytes(StandardCharsets.UTF_8));
+                    if (complete) {
+                        super.flushBuffer();
+                    }
+                }
+            }
+        };
         filterChain.doFilter(httpServletDecryptRequestParamWrapper, response);
+        contentCachingResponseWrapper.copyBodyToResponse();
     }
 }

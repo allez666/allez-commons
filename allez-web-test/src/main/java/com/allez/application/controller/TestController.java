@@ -1,8 +1,13 @@
 package com.allez.application.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.allez.lang.entity.Result;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -22,9 +27,37 @@ public class TestController {
     }
 
     @PostMapping("/test")
-    public String test(TestReq testReq){
+    public String test(TestReq testReq) {
         System.out.println(1);
         return "111";
+    }
+
+    @GetMapping("/testGet")
+    public Result<Map<String,String>> testGet(TestReq req) {
+        return Result.success(Map.of("aaa","111","bbb","222"));
+    }
+
+    @PostMapping("/testPost")
+    public Result<String>testPost(@RequestBody TestReq req) {
+        return Result.success(JSON.toJSONString(req));
+    }
+
+    @PostMapping("/testForm")
+    public Result<String> testForm(TestReq req) {
+        String path = "C:\\Users\\40143\\Desktop\\test_upload";
+        MultipartFile file = req.getCcc();
+        try {
+            File folder = new File(path);
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
+            String fileName = file.getOriginalFilename();
+            File targetFile = new File(path + File.separator + System.currentTimeMillis() + fileName);
+            file.transferTo(targetFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return Result.success(JSON.toJSONString(req));
     }
 
 }
