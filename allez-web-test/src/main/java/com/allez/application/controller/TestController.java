@@ -1,11 +1,10 @@
 package com.allez.application.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.allez.lang.entity.Result;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
@@ -18,6 +17,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("/test")
 public class TestController {
+
+    @GetMapping("/mmm")
+    public String mmm(@RequestParam("a") Integer a,HttpServletRequest httpServletRequest) {
+        return "mmm";
+    }
 
     @PostMapping("{id}/hello")
     public String hello(TestReq req, @PathVariable("id") long id, HttpServletRequest httpServletRequest) {
@@ -39,7 +43,7 @@ public class TestController {
 
     @PostMapping("/testPost")
     public Result<String>testPost(@RequestBody TestReq req) {
-        return Result.success(JSON.toJSONString(req));
+        return null;
     }
 
     @PostMapping("/testForm")
@@ -57,7 +61,7 @@ public class TestController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return Result.success(JSON.toJSONString(req));
+        return Result.success(null);
     }
 
 }

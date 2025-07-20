@@ -1,11 +1,11 @@
 package com.allez.application.entity;
 
 import com.allez.application.utils.HttpServletRequestParseUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 
 /**

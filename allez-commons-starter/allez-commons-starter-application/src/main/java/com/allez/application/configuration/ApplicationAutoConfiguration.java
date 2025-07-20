@@ -3,7 +3,6 @@ package com.allez.application.configuration;
 import com.allez.application.annotation.ConditionalOnAnnotation;
 import com.allez.application.annotation.EnableDecryptRequestParam;
 import com.allez.application.filter.ContentCachingRequestFilter;
-import com.allez.application.filter.DecryptRequestParamFilter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 
@@ -23,11 +22,11 @@ public class ApplicationAutoConfiguration {
 
     // todo http traceId filter
 
-    @Bean
-    @ConditionalOnAnnotation({EnableDecryptRequestParam.class})
-    public DecryptRequestParamFilter decryptRequestParamFilter() {
-        return new DecryptRequestParamFilter();
-    }
+//    @Bean
+//    @ConditionalOnAnnotation({EnableDecryptRequestParam.class})
+//    public DecryptRequestParamFilter decryptRequestParamFilter() {
+//        return new DecryptRequestParamFilter();
+//    }
 
 
 }

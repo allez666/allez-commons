@@ -2,14 +2,13 @@ package com.allez.application.utils;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.net.url.UrlQuery;
-import com.alibaba.fastjson2.JSON;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Part;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
@@ -79,7 +78,8 @@ public class HttpServletRequestParseUtil {
 
     public static <T> T parseHeader(HttpServletRequest servletRequest, Class<T> clazz) {
         Map<String, String> stringStringMap = parseHeader(servletRequest);
-        return JSON.parseObject(JSON.toJSONString(stringStringMap), clazz);
+//        return JSON.parseObject(JSON.toJSONString(stringStringMap), clazz);
+        return null;
     }
 
     public static Map<String, String> parseUrlParam(HttpServletRequest servletRequest) {
