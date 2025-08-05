@@ -5,15 +5,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Collections;
 
-@Configuration // 一定不要忽略此注解
+@Configuration
 public class CorsConfig {
     @Bean
     public CorsFilter corsFilter() {
+
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         //1,允许任何来源
         corsConfiguration.setAllowedOriginPatterns(Collections.singletonList("*"));
