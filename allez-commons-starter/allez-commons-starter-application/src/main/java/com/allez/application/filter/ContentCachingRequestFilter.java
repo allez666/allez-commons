@@ -15,9 +15,11 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
 import java.io.IOException;
 
 /**
+ * 请求/响应体缓存过滤器
+ * 用于缓存 Request Body 和 Response Body，方便后续读取（如日志记录、加解密等）
+ *
  * @author chenyu
  * @date 2024/12/16 19:28
- * @description
  */
 public class ContentCachingRequestFilter extends OncePerRequestFilter implements OrderedFilter {
 
@@ -31,9 +33,6 @@ public class ContentCachingRequestFilter extends OncePerRequestFilter implements
 
         ContentCachingRequestWrapper contentCachingRequestWrapper = buildContentCachingRequestWrapper(request);
         ContentCachingResponseWrapper contentCachingResponseWrapper = new ContentCachingResponseWrapper(response);
-        contentCachingResponseWrapper.setHeader("Access-Control-Allow-Origin", "*");
-        contentCachingResponseWrapper.setHeader("Access-Control-Allow-Methods", "*");
-        contentCachingResponseWrapper.setHeader("Access-Control-Allow-Headers", "*");
         filterChain.doFilter(contentCachingRequestWrapper, contentCachingResponseWrapper);
         //将写入的数据缓存起来了，而没有同时写到OutputStream中。这导致返回结果一直为空。
         // 解决方法是，在最后一定要手动调用它的copyBodyToResponse方法，将缓存的数据写入输出流里。

@@ -1,8 +1,7 @@
 package com.allez.application.configuration;
 
-import com.allez.application.annotation.ConditionalOnAnnotation;
-import com.allez.application.annotation.EnableDecryptRequestParam;
 import com.allez.application.filter.ContentCachingRequestFilter;
+import com.allez.application.filter.CorsFilter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 
@@ -18,6 +17,12 @@ public class ApplicationAutoConfiguration {
     @ConditionalOnMissingBean(ContentCachingRequestFilter.class)
     public ContentCachingRequestFilter contentCachingRequestFilter() {
         return new ContentCachingRequestFilter();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(CorsFilter.class)
+    public CorsFilter corsFilter() {
+        return new CorsFilter();
     }
 
     // todo http traceId filter

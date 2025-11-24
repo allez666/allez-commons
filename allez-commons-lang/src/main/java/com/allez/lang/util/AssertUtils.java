@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.allez.lang.enums.ResultCode;
 import com.allez.lang.exception.BusinessException;
 
 import javax.annotation.Nullable;
@@ -14,9 +15,17 @@ import java.util.function.Supplier;
 
 
 /**
+ * 断言工具类
+ * 提供便捷的断言方法，断言失败时抛出 BusinessException
+ * <p>
+ * 支持多种使用方式：
+ * 1. 使用自定义消息：AssertUtils.notNull(user, "用户不存在")
+ * 2. 使用 ResultCode 枚举：AssertUtils.notNull(user, ResultCode.USER_NOT_EXIST)
+ * 3. 使用 ResultCode + 自定义消息：AssertUtils.notNull(user, ResultCode.USER_NOT_EXIST, "用户ID=" + id + "不存在")
+ * 4. 使用自定义 code：AssertUtils.notNull(user, 3000, "用户不存在")
+ *
  * @author chenyu
  * @date 2024/3/8 18:36
- * @description
  */
 public class AssertUtils {
 
