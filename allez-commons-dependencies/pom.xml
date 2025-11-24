@@ -21,6 +21,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Spring -->
+        <!--        springboot 版本对应关系：https://start.spring.io/actuator/info-->
         <spring-boot.version>3.4.1</spring-boot.version>
         <spring-cloud-dependencies.version>2024.0.0</spring-cloud-dependencies.version>
         <spring-cloud-alibaba-dependencies.version>2023.0.3.2</spring-cloud-alibaba-dependencies.version>
@@ -66,7 +67,6 @@
         <mybatis-plus.version>3.5.12</mybatis-plus.version>
         <!-- Test -->
         <junit-jupiter-api.version>5.11.4</junit-jupiter-api.version>
-
 
 
     </properties>
