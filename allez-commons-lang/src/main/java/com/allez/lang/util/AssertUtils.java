@@ -5,10 +5,9 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.allez.lang.enums.ResultCode;
 import com.allez.lang.exception.BusinessException;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -459,7 +458,7 @@ public class AssertUtils {
      * @param collection the collection to check
      * @param message    the exception message to use if the assertion fails
      * @throws BusinessException if the collection is {@code null} or
-     *                                  contains no elements
+     *                           contains no elements
      */
     public static void notEmpty(@Nullable Collection<?> collection, String message) {
         if (CollUtil.isEmpty(collection)) {
@@ -478,7 +477,7 @@ public class AssertUtils {
      * @param messageSupplier a supplier for the exception message to use if the
      *                        assertion fails
      * @throws BusinessException if the collection is {@code null} or
-     *                                  contains no elements
+     *                           contains no elements
      * @since 5.0
      */
     public static void notEmpty(@Nullable Collection<?> collection, Supplier<String> messageSupplier) {

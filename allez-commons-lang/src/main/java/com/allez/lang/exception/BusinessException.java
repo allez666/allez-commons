@@ -13,7 +13,7 @@ import lombok.Getter;
  * 3. 自定义消息：使用 new BusinessException(ResultCode.XXX, "自定义消息")
  *
  * @author chenyu
- * @date 2023/12/21 19:24
+ * @date 2023/12/25 19:24
  */
 @Getter
 public class BusinessException extends RuntimeException {

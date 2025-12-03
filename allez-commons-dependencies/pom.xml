@@ -16,30 +16,31 @@
 
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Spring -->
         <!--        springboot 版本对应关系：https://start.spring.io/actuator/info-->
-        <spring-boot.version>3.4.1</spring-boot.version>
-        <spring-cloud-dependencies.version>2024.0.0</spring-cloud-dependencies.version>
-        <spring-cloud-alibaba-dependencies.version>2023.0.3.2</spring-cloud-alibaba-dependencies.version>
+        <spring-boot.version>4.0.0-M2</spring-boot.version>
+        <spring-cloud-dependencies.version>2025.1.0</spring-cloud-dependencies.version>
+        <!--        todo alibaba的要换版本 还没发布-->
+        <spring-cloud-alibaba-dependencies.version>2025.0.0.0-preview</spring-cloud-alibaba-dependencies.version>
 
         <!-- Apache Commons -->
-        <commons-lang3.version>3.17.0</commons-lang3.version>
-        <commons-collections4.version>4.4</commons-collections4.version>
-        <commons-io.version>2.18.0</commons-io.version>
-        <commons-text.version>1.11.0</commons-text.version>
-        <commons-compress.version>1.27.1</commons-compress.version>
-        <tika-core.version>3.1.0</tika-core.version>
+        <commons-lang3.version>3.20.0</commons-lang3.version>
+        <commons-collections4.version>4.5.0</commons-collections4.version>
+        <commons-io.version>2.21.0</commons-io.version>
+        <commons-text.version>1.14.0</commons-text.version>
+        <commons-compress.version>1.28.0</commons-compress.version>
+        <tika-core.version>3.2.3</tika-core.version>
 
         <!-- Utility Libraries -->
         <annotations.version>26.0.1</annotations.version>
-        <guava.version>33.4.0-jre</guava.version>
-        <json-path.version>2.9.0</json-path.version>
-        <lombok.version>1.18.36</lombok.version>
-        <jackson.version>2.18.2</jackson.version>
+        <guava.version>33.5.0-jre</guava.version>
+        <json-path.version>2.10.0</json-path.version>
+        <lombok.version>1.18.42</lombok.version>
+        <jackson.version>2.19.4</jackson.version>
         <hanlp.version>portable-1.8.4</hanlp.version>
         <groovy.version>4.0.24</groovy.version>
         <hutool-all.version>5.8.35</hutool-all.version>
@@ -291,25 +292,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.mapstruct</groupId>
-                            <artifactId>mapstruct-processor</artifactId>
-                            <version>${org.mapstruct.version}</version>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>

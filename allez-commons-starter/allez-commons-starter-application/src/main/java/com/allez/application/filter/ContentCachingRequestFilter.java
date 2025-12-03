@@ -7,7 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.boot.web.servlet.filter.OrderedFilter;
+import org.springframework.boot.servlet.filter.OrderedFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
@@ -46,7 +46,7 @@ public class ContentCachingRequestFilter extends OncePerRequestFilter implements
      * 这里重写一下 获取流的方法，读完后 从缓存拿
      */
     private ContentCachingRequestWrapper buildContentCachingRequestWrapper(HttpServletRequest request) {
-        return new ContentCachingRequestWrapper(request) {
+        return new ContentCachingRequestWrapper(request,0) {
             @Override
             public ServletInputStream getInputStream() throws IOException {
                 ServletInputStream inputStream = super.getInputStream();
