@@ -16,16 +16,21 @@
 
 
     <properties>
-        <maven.compiler.source>25</maven.compiler.source>
-        <maven.compiler.target>25</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Spring -->
-        <!--        springboot 版本对应关系：https://start.spring.io/actuator/info-->
-        <spring-boot.version>4.0.0-M2</spring-boot.version>
-        <spring-cloud-dependencies.version>2025.1.0</spring-cloud-dependencies.version>
-        <!--        todo alibaba的要换版本 还没发布-->
-        <spring-cloud-alibaba-dependencies.version>2025.0.0.0-preview</spring-cloud-alibaba-dependencies.version>
+        <!-- springboot 版本对应关系：https://start.spring.io/actuator/info -->
+        <spring-boot.version>4.0.2</spring-boot.version>
+<!--        <spring-boot.version>4.0.0-M2</spring-boot.version>-->
+        <spring-cloud-dependencies.version>2025.1.1</spring-cloud-dependencies.version>
+        <spring-cloud-alibaba-dependencies.version>2025.1.0.0</spring-cloud-alibaba-dependencies.version>
+
+        <!-- Spring Ai -->
+        <spring-ai.version>2.0.0-M2</spring-ai.version>
+        <!-- todo spring ai alibaba 需要换版本，还没有适配springboot 4.0的版本-->
+        <spring-ai-alibaba.version>1.1.2.0</spring-ai-alibaba.version>
 
         <!-- Apache Commons -->
         <commons-lang3.version>3.20.0</commons-lang3.version>
@@ -97,6 +102,22 @@
                 <scope>import</scope>
             </dependency>
 
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-bom</artifactId>
+                <version>${spring-ai.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba.cloud.ai</groupId>
+                <artifactId>spring-ai-alibaba-bom</artifactId>
+                <version>1.1.2.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
 
             <!-- Apache Commons -->
             <dependency>
@@ -150,6 +171,7 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
@@ -292,4 +314,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+
+
 </project>

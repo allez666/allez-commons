@@ -7,7 +7,15 @@ package com.allez.lang.entity;
  */
 public interface BasePage {
 
+    /**
+     * 获取当前页数
+     * @return int
+     */
     int getPageNumber();
 
+    /**
+     * 一页多少数据
+     * @return int
+     */
     int getPageSize();
 }

@@ -18,24 +18,25 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Sort implements Serializable {
 
-
     private final List<OrderItem> orderChains = new ArrayList<>();
 
-//    public static Sort desc(String... properties) {
-//        List<OrderItem> orderItems = OrderItem.desc(properties);
-//        return by(orderItems);
-//    }
 
 
-//    public static Sort desc(List<String> properties) {
-//        List<OrderItem> orderItems = OrderItem.desc(properties);
-//        return by(orderItems);
-//    }
-//
-//    public static Sort asc(String... properties) {
-//        List<OrderItem> orderItems = OrderItem.asc(properties);
-//        return by(orderItems);
-//    }
+    public static Sort desc(String... properties) {
+        List<OrderItem> orderItems = OrderItem.desc(properties);
+        return by(orderItems);
+    }
+
+
+    public static Sort desc(List<String> properties) {
+        List<OrderItem> orderItems = OrderItem.desc(properties);
+        return by(orderItems);
+    }
+
+    public static Sort asc(String... properties) {
+        List<OrderItem> orderItems = OrderItem.asc(properties);
+        return by(orderItems);
+    }
 
     public static Sort by(OrderItem... orderItems) {
         return by(Arrays.asList(orderItems));
@@ -48,22 +49,6 @@ public class Sort implements Serializable {
         }
         return sort;
     }
-
-//    public static Sort by(String property, String direction) {
-//        Sort sort = new Sort();
-//        return sort.and(property, direction);
-//    }
-//
-//    public Sort and(String property, String direction) {
-//        this.orderChains.add(new OrderItem(property, Direction.valueOf(direction)));
-//        return this;
-//    }
-//
-//    public Sort and(String property, Direction direction) {
-//        this.orderChains.add(OrderItem.of(property, direction));
-//        return this;
-//    }
-
 
     public Sort and(OrderItem orderItem) {
         this.orderChains.add(orderItem);
@@ -106,6 +91,9 @@ public class Sort implements Serializable {
         private String property;
 
         private Direction direction;
+
+
+
 
         public static OrderItem desc(String property) {
             return new OrderItem(property, Direction.DESC);

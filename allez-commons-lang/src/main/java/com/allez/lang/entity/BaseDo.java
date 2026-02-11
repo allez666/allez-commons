@@ -25,8 +25,4 @@ public class BaseDo<ID extends Serializable> implements Serializable {
     private LocalDateTime updateTime;
 
 
-    public static void main(String[] args) {
-    }
-
-
 }

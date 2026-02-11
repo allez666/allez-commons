@@ -2,9 +2,7 @@ package com.allez.lang.entity;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -27,7 +25,6 @@ public class PageRequest implements Serializable, BasePage, BaseSort {
     private int pageSize;
 
     private Sort sort;
-
 
     public PageRequest(int pageNumber, int pageSize) {
         this.pageNumber = pageNumber;
