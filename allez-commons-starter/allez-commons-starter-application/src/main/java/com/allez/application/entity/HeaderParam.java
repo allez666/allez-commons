@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Enumeration;
 
@@ -20,6 +21,8 @@ import java.util.Enumeration;
 @FieldNameConstants
 public class HeaderParam implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private ClientInfo clientInfo;
 

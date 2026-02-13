@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -15,6 +16,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Data
 public class PageRequest implements Serializable, BasePage, BaseSort {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @NotNull
     @Min(1)

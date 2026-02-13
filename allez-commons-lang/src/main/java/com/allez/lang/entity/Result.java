@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.function.Function;
 
@@ -16,6 +17,9 @@ import java.util.function.Function;
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Result<T> implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private Integer code;
 

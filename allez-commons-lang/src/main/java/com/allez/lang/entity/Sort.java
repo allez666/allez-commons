@@ -3,10 +3,12 @@ package com.allez.lang.entity;
 import com.allez.lang.util.AssertUtils;
 import lombok.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -18,8 +20,10 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Sort implements Serializable {
 
-    private final List<OrderItem> orderChains = new ArrayList<>();
+    @Serial
+    private static final long serialVersionUID = 1L;
 
+    private final List<OrderItem> orderChains = new ArrayList<>();
 
 
     public static Sort desc(String... properties) {
@@ -88,11 +92,12 @@ public class Sort implements Serializable {
     @Data
     public static class OrderItem implements Serializable {
 
+        @Serial
+        private static final long serialVersionUID = 1L;
+
         private String property;
 
         private Direction direction;
-
-
 
 
         public static OrderItem desc(String property) {
@@ -127,7 +132,14 @@ public class Sort implements Serializable {
     @AllArgsConstructor
     public enum Direction implements Serializable {
 
+        /**
+         * 升序
+         */
         ASC,
+
+        /**
+         * 降序
+         */
         DESC,
 
         ;
@@ -140,10 +152,10 @@ public class Sort implements Serializable {
             return this.equals(DESC);
         }
 
-        public Direction of(String value) {
-            Direction direction = valueOf(value.toUpperCase());
-            AssertUtils.notNull(direction, String.format("Invalid value '%s' for orders given! Has to be either 'desc' or 'asc' (case insensitive).", value));
-            return direction;
+        public static Optional<Direction> of(String value) {
+            return Optional.ofNullable(value)
+                    .map(String::toUpperCase)
+                    .map(Direction::valueOf);
         }
 
     }
