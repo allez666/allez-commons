@@ -1,12 +1,10 @@
 package com.allez.lang.util;
 
+import com.allez.lang.enums.BoooleanEnum;
 import com.allez.lang.enums.IValue;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 /**
  * @author chenyu
@@ -14,79 +12,47 @@ import java.util.stream.Collectors;
  * @description 枚举转化工具类
  */
 public class EnumConverterUtils {
-    private static final Map<Class<? extends IValue<?>>, Map<Object, IValue<?>>> ENUM_TYPE_VALUE_MAP = new ConcurrentHashMap<>();
+    /**
+     * enumClass -> (value-> enum)
+     */
+    private static final Map<Class<? extends IValue<?>>, Map<?, ?>> ENUM_TYPE_VALUE_MAP = new ConcurrentHashMap<>();
+
 
     /**
-     * value转枚举
-     *
-     * @param enumClass
-     * @param value
-     * @param <T>
-     * @param <E>
-     * @return
+     * 获取缓存map
+     * 将泛型擦除都收敛在这里
      */
     @SuppressWarnings("unchecked")
-    public static <T, E extends IValue<T>> E convert(Class<E> enumClass, T value) {
-        if (Objects.isNull(value)) {
-            return null;
-        }
-        // 取缓存
-        Map<Object, IValue<?>> enumValueMap = ENUM_TYPE_VALUE_MAP.get(enumClass);
-        if (Objects.isNull(enumValueMap)) {
-            // 不存在就解析一下
-            synchronized (EnumConverterUtils.class) {
-                enumValueMap = ENUM_TYPE_VALUE_MAP.get(enumClass);
-                if (Objects.isNull(enumValueMap)) {
-                    enumValueMap = new ConcurrentHashMap<>();
-                    // 根据value放入缓存
-                    for (E enumObj : enumsOf(enumClass)) {
-                        enumValueMap.put(enumObj.getValue(), enumObj);
-                    }
-                    ENUM_TYPE_VALUE_MAP.put(enumClass, enumValueMap);
-                }
-            }
-        }
-        return (E) enumValueMap.get(value);
+    private static <T, E extends IValue<T>> Map<T, E> getCacheMap(Class<E> enumClass) {
+        Map<?, ?> map = ENUM_TYPE_VALUE_MAP
+                .computeIfAbsent(enumClass, EnumConverterUtils::buildValueMap);
+        return (Map<T, E>) map;
     }
 
-    /**
-     * 执行枚举的values方法
-     *
-     * @param enumClass
-     * @param <T>
-     * @param <E>
-     * @return
-     */
-    private static <T, E extends IValue<T>> E[] enumsOf(Class<E> enumClass) {
+    private static Map<?, ?> buildValueMap(Class<? extends IValue<?>> enumClass) {
+        if (!enumClass.isEnum()) {
+            throw new IllegalArgumentException("Not an enum: " + enumClass);
+        }
+        IValue<?>[] enums = enumClass.getEnumConstants();
+        Map<Object, Object> map = new HashMap<>(enums.length);
 
-        // 必须是枚举类型
-        if (!(Enum.class.isAssignableFrom(enumClass))) {
-            throw new RuntimeException(String.format("%s is not a enum type", enumClass));
+        for (IValue<?> e : enums) {
+            map.put(e.getValue(), e);
         }
-        try {
-            // 执行枚举values方法获取所有元素
-            Method valuesMethod = enumClass.getMethod("values");
-            return (E[]) valuesMethod.invoke(null);
-        } catch (NoSuchMethodException e) {
-            // 入口有枚举类型检查, 所以不会执行到这里
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
-            // 入口有枚举类型检查, 所以不会执行到这里
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            // 入口有枚举类型检查, 所以不会执行到这里
-            throw new RuntimeException(e);
+        return map;
+
+    }
+
+
+    public static <T, E extends IValue<T>> E convert(Class<E> enumClass, T value) {
+        if (value == null) {
+            return null;
         }
+        return getCacheMap(enumClass).get(value);
     }
 
     /**
      * 非空的
-     *
-     * @param enumClass
-     * @param value
-     * @param <T>
-     * @param <E>
-     * @return
      */
     public static <T, E extends IValue<T>> E convertNonNull(Class<E> enumClass, T value) {
         E result = convert(enumClass, value);
@@ -98,13 +64,6 @@ public class EnumConverterUtils {
 
     /**
      * 带默认值的
-     *
-     * @param enumClass
-     * @param value
-     * @param defaultValue
-     * @param <T>
-     * @param <E>
-     * @return
      */
     public static <T, E extends IValue<T>> E convert(Class<E> enumClass, T value, E defaultValue) {
         E result = convert(enumClass, value);
@@ -116,19 +75,24 @@ public class EnumConverterUtils {
 
     /**
      * Optional
-     *
-     * @param value
-     * @return
      */
     public static <T, E extends IValue<T>> Optional<E> convertOptional(Class<E> enumClass, T value) {
         return Optional.ofNullable(convert(enumClass, value));
     }
 
     public static <T, E extends IValue<T>> Collection<T> valuesOf(Class<E> enumClass) {
-        return Arrays.stream(enumsOf(enumClass)).map(IValue::getValue).collect(Collectors.toList());
+        return new ArrayList<>(getCacheMap(enumClass).keySet());
     }
 
     public static <T, E extends IValue<T>> boolean contains(Class<E> enumClass, T value) {
-        return valuesOf(enumClass).contains(value);
+        if (value == null) {
+            return false;
+        }
+        return getCacheMap(enumClass).containsKey(value);
+    }
+
+    public static void main(String[] args) {
+        BoooleanEnum convert = EnumConverterUtils.convert(BoooleanEnum.class, 1);
+        System.out.println(1);
     }
 }

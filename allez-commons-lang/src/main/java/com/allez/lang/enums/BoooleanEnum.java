@@ -14,8 +14,16 @@ import java.util.Objects;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum BoooleanEnum implements IValue<Integer> {
+
+    /**
+     * false
+     */
     FALSE(0, false, "false"),
 
+
+    /**
+     * true
+     */
     TRUE(1, true, "true"),
     ;
 
@@ -45,7 +53,7 @@ public enum BoooleanEnum implements IValue<Integer> {
 
 
     public boolean equalsIgnoreCaseByStringValue(String stringValue) {
-        return equalsByStringValue(stringValue) || this.stringValue.equalsIgnoreCase(stringValue);
+        return this.stringValue.equalsIgnoreCase(stringValue);
     }
 
 
