@@ -17,6 +17,6 @@ import java.lang.annotation.*;
 public @interface ConditionalOnMissingAnnotation {
     String VALUE_FIELD_NAME = "value";
 
-    Class<? extends Annotation>[] value();
+    Class<? extends Annotation>[] value() default {};
 
 }

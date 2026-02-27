@@ -17,16 +17,17 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BaseDo<ID extends Serializable> implements Serializable {
+public abstract class BaseDo<ID extends Serializable> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
-    private ID id;
 
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
 
+
+    public abstract ID getId();
+    public abstract void setId(ID id);
 
 }

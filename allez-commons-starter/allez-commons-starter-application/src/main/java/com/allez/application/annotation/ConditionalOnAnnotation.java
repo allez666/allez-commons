@@ -18,6 +18,6 @@ public @interface ConditionalOnAnnotation {
 
     String VALUE_FIELD_NAME = "value";
 
-    Class<? extends Annotation>[] value();
+    Class<? extends Annotation>[] value() default {};
 
 }

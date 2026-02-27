@@ -25,6 +25,9 @@ public class Sort implements Serializable {
 
     private final List<OrderItem> orderChains = new ArrayList<>();
 
+    public List<OrderItem> getOrderChains() {
+        return orderChains;
+    }
 
     public static Sort desc(String... properties) {
         List<OrderItem> orderItems = OrderItem.desc(properties);

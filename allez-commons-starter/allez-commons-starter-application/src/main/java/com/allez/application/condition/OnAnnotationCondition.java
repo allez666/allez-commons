@@ -21,7 +21,6 @@ import java.util.List;
  * @create: 2024-12-17 21:59
  * @Description:
  */
-@Order
 public class OnAnnotationCondition extends SpringBootCondition {
 
 
