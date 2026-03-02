@@ -10,8 +10,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class PageConverter {
-    private PageConverter() {
+public final class MpDataConverter {
+    private MpDataConverter() {
         // 私有构造，防止实例化
     }
 
@@ -35,7 +35,7 @@ public final class PageConverter {
 
         return sort.getOrderChains()
                 .stream()
-                .map(PageConverter::adaptOrderChain)
+                .map(MpDataConverter::adaptOrderChain)
                 .collect(Collectors.toList());
     }
 
